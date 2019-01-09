@@ -42,9 +42,9 @@ export const fetchUser = () => dispatch => {
   });
 };
 
-export const signIn = () => dispatch => {
+export const signIn = ({username, password}) => dispatch => {
   authRef
-    .signInWithEmailAndPassword('a@a.com', 'password')
+    .signInWithEmailAndPassword(username, password)
     .then(result => {})
     .catch(error => {
       console.log(error);

@@ -9,6 +9,16 @@ class SignInContainer extends Component {
     router: PropTypes.object
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: '',
+      password: '',
+      submitted: false
+    };
+  }
+
   componentWillUpdate(nextProps) {
     if (nextProps !== this.props) {
       if (nextProps.auth) {
@@ -17,10 +27,26 @@ class SignInContainer extends Component {
     }
   }
 
+  handleChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    this.setState({ submitted: true });
+    const { username, password } = this.state;
+    console.log('username, password: ', username, password);
+    if (username && password) {
+      this.props.signIn({username, password});
+    }
+  }
+
   render() {
     return (
       <div className="login-form">
-      <style>{`
+        <style>{`
       body > div,
       body > div > div,
       body > div > div > div.login-form {
@@ -31,7 +57,6 @@ class SignInContainer extends Component {
           textAlign="center"
           style={{ height: '100%' }}
           verticalAlign="middle"
-          horizontalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>
             <Header as="h2" color="teal" textAlign="center">
@@ -44,6 +69,8 @@ class SignInContainer extends Component {
                   icon="user"
                   iconPosition="left"
                   placeholder="E-mail address"
+                  name="username"
+                  onChange={this.handleChange}
                 />
                 <Form.Input
                   fluid
@@ -51,9 +78,16 @@ class SignInContainer extends Component {
                   iconPosition="left"
                   placeholder="Password"
                   type="password"
+                  name="password"
+                  onChange={this.handleChange}
                 />
 
-                <Button color="teal" fluid size="large" onClick={this.props.signIn}>
+                <Button
+                  color="teal"
+                  fluid
+                  size="large"
+                  onClick={this.handleSubmit}
+                >
                   Login
                 </Button>
               </Segment>
