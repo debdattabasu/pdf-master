@@ -1,30 +1,7 @@
-import { todosRef, authRef, provider } from "../config/firebase";
+import { authRef } from '../config/firebase';
 
 export const FETCH_TODOS = "FETCH_TODOS";
 export const FETCH_USER = "FETCH_USER";
-
-export const addToDo = (newToDo, uid) => async dispatch => {
-  todosRef
-    .child(uid)
-    .push()
-    .set(newToDo);
-};
-
-export const completeToDo = (completeToDoId, uid) => async dispatch => {
-  todosRef
-    .child(uid)
-    .child(completeToDoId)
-    .remove();
-};
-
-export const fetchToDos = uid => async dispatch => {
-  todosRef.child(uid).on("value", snapshot => {
-    dispatch({
-      type: FETCH_TODOS,
-      payload: snapshot.val()
-    });
-  });
-};
 
 export const fetchUser = () => dispatch => {
   authRef.onAuthStateChanged(user => {
@@ -42,7 +19,7 @@ export const fetchUser = () => dispatch => {
   });
 };
 
-export const signIn = ({username, password}) => dispatch => {
+export const signIn = ({ username, password }) => dispatch => {
   authRef
     .signInWithEmailAndPassword(username, password)
     .then(result => {})

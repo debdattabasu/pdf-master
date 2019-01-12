@@ -7,9 +7,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import _ from 'lodash';
 
 export default class Counter extends Component<Props> {
-
+ componentDidMount() {
+   this.props.fetchOrders();
+ }
+ 
   handleClick = () => {
   const {addPdfToList} = this.props;
     const paths = remote.dialog.showOpenDialog({ properties: ['openFile', 'openDirectory', 'multiSelections'] }) || [];
@@ -38,7 +42,7 @@ export default class Counter extends Component<Props> {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map(order => {
+            {_.map(orders, (order => {
               return (
                 <TableRow key={order.id}>
                   <TableCell>{order.id}</TableCell>
@@ -47,7 +51,7 @@ export default class Counter extends Component<Props> {
                   <TableCell align="right">{order.platform}</TableCell>
                 </TableRow>
               );
-            })}
+            }))}
           </TableBody>
         </Table>
       </Paper>
