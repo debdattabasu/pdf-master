@@ -22,7 +22,6 @@ export const fetchOrders = () => async dispatch => {
   ordersRef.once('value', (snapshot) => {
     if (snapshot.val()) {
       const orders = Object.keys(snapshot.val()).map(i => snapshot.val()[i])
-      console.log('orders: ', orders);
       dispatch({type: FETCH_ORDERS, orders});
     }
   });

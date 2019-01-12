@@ -6,7 +6,8 @@ import { signOut } from "../actions/auth";
 
 function mapStateToProps(state) {
   return {
-    orders: state.orders
+    orders: state.orders,
+    auth: state.auth
   };
 }
 
