@@ -64,7 +64,12 @@ app.on('window-all-closed', () => {
 
 ipcMain.on('scrapePDF', (event, path) => {
   let dataBuffer = fs.readFileSync(path);
-  pdf(dataBuffer).then((data) => event.returnValue = data);
+  pdf(dataBuffer)
+    .then((data) => event.returnValue = data)
+    .catch((error) => {
+      console.error('Error parsing pdf:', error)
+      event.returnValue = []
+    });
 });
 
 app.on('ready', async () => {
@@ -77,7 +82,7 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1200,
+    width: 1024,
     height: 728
   });
 

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { remote, ipcRenderer } from 'electron';
+import { Image, Container, Menu, Button} from 'semantic-ui-react'
 import OrdersTable from './orders-table';
-import orders from '../reducers/orders';
-import { Image, Container, Menu, Icon, Label, Table, Button, Input, Grid } from 'semantic-ui-react'
 
 export default class Counter extends Component<Props> {
   componentDidMount() {
@@ -24,6 +23,7 @@ export default class Counter extends Component<Props> {
   }
 
   render() {
+    const {auth, orders} = this.props;
     return (
       <Container style={{ marginTop: '1em' }}>
         <Menu>
@@ -33,7 +33,7 @@ export default class Counter extends Component<Props> {
           <Menu.Menu position='right'>
             <Menu.Item>
               <Image src='https://react.semantic-ui.com/images/avatar/small/veronika.jpg' avatar />
-              <span>{this.props.auth.email}</span>            
+              <span>{auth.email}</span>            
             </Menu.Item>
             <Menu.Item
               name='logout'
@@ -41,7 +41,7 @@ export default class Counter extends Component<Props> {
             />
           </Menu.Menu>
         </Menu>
-          <OrdersTable orders={this.props.orders}/>
+          <OrdersTable orders={orders}/>
       </Container>
     );
   }

@@ -13,6 +13,8 @@ function OrdersTable(props) {
           <Table.HeaderCell>Shipping Price</Table.HeaderCell>
           <Table.HeaderCell>Total Price</Table.HeaderCell>
           <Table.HeaderCell>Platform</Table.HeaderCell>
+          <Table.HeaderCell>SKU</Table.HeaderCell>
+          <Table.HeaderCell>ASIN</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -23,6 +25,8 @@ function OrdersTable(props) {
               <Table.Cell>{order.shippingPrice}</Table.Cell>
               <Table.Cell>{order.totalPrice}</Table.Cell>
               <Table.Cell>{order.platform}</Table.Cell>
+              <Table.Cell>{order.sku}</Table.Cell>
+              <Table.Cell>{order.asin}</Table.Cell>
             </Table.Row>
           );
         }))}
