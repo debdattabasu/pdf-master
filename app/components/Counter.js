@@ -22,6 +22,11 @@ export default class Counter extends Component<Props> {
     signOut();
   }
 
+  onOrderToggle = (order) => {
+    const {toggleOrder} = this.props;
+    toggleOrder(order);
+  }
+
   render() {
     const {auth, orders} = this.props;
     return (
@@ -41,7 +46,7 @@ export default class Counter extends Component<Props> {
             />
           </Menu.Menu>
         </Menu>
-          <OrdersTable orders={orders}/>
+          <OrdersTable orders={orders} onOrderToggle={this.onOrderToggle}/>
       </Container>
     );
   }

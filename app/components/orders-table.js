@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Table} from 'semantic-ui-react'
+import {Table, Checkbox} from 'semantic-ui-react'
 import _ from 'lodash';
 
+
 function OrdersTable(props) {
-  const { orders } = props;
+  const { orders, onOrderToggle } = props;
+
+  const ctaButton = (order) => <Checkbox checked={order.completed} toggle onChange={() => onOrderToggle(order)}/>
+
   return (
     <Table compact>
       <Table.Header>
@@ -16,12 +20,13 @@ function OrdersTable(props) {
           <Table.HeaderCell>SKU</Table.HeaderCell>
           <Table.HeaderCell>ASIN</Table.HeaderCell>
           <Table.HeaderCell>Order Registered</Table.HeaderCell>
+          <Table.HeaderCell>Completed</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
         {_.map(orders, (order => {
           return (
-            <Table.Row key={order.id}>
+            <Table.Row key={order.id} positive={order.completed}>
               <Table.Cell>{order.id}</Table.Cell>
               <Table.Cell>{order.shippingPrice}</Table.Cell>
               <Table.Cell>{order.totalPrice}</Table.Cell>
@@ -29,6 +34,7 @@ function OrdersTable(props) {
               <Table.Cell>{order.sku}</Table.Cell>
               <Table.Cell>{order.asin}</Table.Cell>
               <Table.Cell>{new Date(order.timeRegistered).toLocaleDateString()}</Table.Cell>
+              <Table.Cell>{ctaButton(order)}</Table.Cell>
             </Table.Row>
           );
         }))}
@@ -39,6 +45,7 @@ function OrdersTable(props) {
 
 OrdersTable.propTypes = {
   orders: PropTypes.array.isRequired,
+  onOrderToggle: PropTypes.func.isRequired,
 };
 
 export default OrdersTable;

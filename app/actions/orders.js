@@ -1,8 +1,9 @@
 import {get} from 'lodash';
-import { ordersRef } from "../config/firebase";
+import { ordersRef, database } from "../config/firebase";
 
 export const ADD_ORDER = 'ADD_ORDER';
 export const FETCH_ORDERS = 'FETCH_ORDERS';
+export const TOGGLE_ORDER = 'TOGGLE_ORDER';
 
 export function addPdfToList(order) {
   return (dispatch) => {
@@ -20,6 +21,7 @@ export function addPdfToList(order) {
       sku: get(sku, '[0]') || '-',
       asin: get(asin, '[0]') || '-',
       timeRegistered: Date.now(),
+      completed: false,
     };
 
     ordersRef
@@ -38,3 +40,10 @@ export const fetchOrders = () => async dispatch => {
     }
   });
 }; 
+
+export function toggleOrder({id, completed}) {
+  return (dispatch) => {
+    database.ref(`orders/${id}`).update({completed: !completed});
+    dispatch({type: TOGGLE_ORDER, orderId: id});
+  }
+}

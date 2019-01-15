@@ -1,5 +1,5 @@
 // @flow
-import { ADD_ORDER, FETCH_ORDERS } from '../actions/orders';
+import { ADD_ORDER, FETCH_ORDERS, TOGGLE_ORDER } from '../actions/orders';
 import type { Action } from './types';
 
 export default function orders(state = [], action: Action) {
@@ -10,6 +10,12 @@ export default function orders(state = [], action: Action) {
     }
     case FETCH_ORDERS: {
       return action.orders
+    }
+    case TOGGLE_ORDER: {
+      return state.map(
+        order =>
+          order.id === action.orderId ? { ...order, completed: !order.completed } : order
+      );
     }
     default:
       return state;
