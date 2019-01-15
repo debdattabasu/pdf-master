@@ -1,5 +1,5 @@
-import { ordersRef } from "../config/firebase";
 import {get} from 'lodash';
+import { ordersRef } from "../config/firebase";
 
 export const ADD_ORDER = 'ADD_ORDER';
 export const FETCH_ORDERS = 'FETCH_ORDERS';
@@ -19,6 +19,7 @@ export function addPdfToList(order) {
       platform: get(platform, '[0]') || '-',
       sku: get(sku, '[0]') || '-',
       asin: get(asin, '[0]') || '-',
+      timeRegistered: Date.now(),
     };
 
     ordersRef

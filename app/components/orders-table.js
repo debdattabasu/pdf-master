@@ -15,6 +15,7 @@ function OrdersTable(props) {
           <Table.HeaderCell>Platform</Table.HeaderCell>
           <Table.HeaderCell>SKU</Table.HeaderCell>
           <Table.HeaderCell>ASIN</Table.HeaderCell>
+          <Table.HeaderCell>Order Registered</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -27,6 +28,7 @@ function OrdersTable(props) {
               <Table.Cell>{order.platform}</Table.Cell>
               <Table.Cell>{order.sku}</Table.Cell>
               <Table.Cell>{order.asin}</Table.Cell>
+              <Table.Cell>{new Date(order.timeRegistered).toLocaleDateString()}</Table.Cell>
             </Table.Row>
           );
         }))}

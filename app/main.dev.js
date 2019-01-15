@@ -63,7 +63,7 @@ app.on('window-all-closed', () => {
 });
 
 ipcMain.on('scrapePDF', (event, path) => {
-  let dataBuffer = fs.readFileSync(path);
+  const dataBuffer = fs.readFileSync(path);
   pdf(dataBuffer)
     .then((data) => event.returnValue = data)
     .catch((error) => {
