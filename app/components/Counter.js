@@ -5,16 +5,20 @@ import OrdersTable from './orders-table';
 
 export default class Counter extends Component<Props> {
   componentDidMount() {
-    this.props.fetchOrders();
+    const {fetchOrders} = this.props
+    fetchOrders();
   }
  
   handleClick = () => {
-  const {addPdfToList} = this.props;
-    const paths = remote.dialog.showOpenDialog({ properties: ['openFile', 'openDirectory', 'multiSelections'] }) || [];
-    paths.forEach((path) => {
-      const pdfData = ipcRenderer.sendSync('scrapePDF', path);
-      addPdfToList(pdfData.text);
-    });
+    const {addPdfToList} = this.props;
+    const filters = [{name: 'Documents', extensions: ['pdf']}];
+    const paths = remote.dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'], filters}) || [];
+    if(paths.length > 0) {
+      paths.forEach((path) => {
+        const pdfData = ipcRenderer.sendSync('scrapePDF', path);
+        addPdfToList(pdfData.text);
+      });
+    }
   }
 
   logOut = () => {

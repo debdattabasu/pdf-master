@@ -14,7 +14,7 @@ export function addPdfToList(order) {
     const totalPrice = /(?<=Grand total: ).*/.exec(order) || /(?<=Order total).*/.exec(order);
     const platform =  /(?:Amazon)/.exec(order) || /(?:etsy)/.exec(order) || '-';
     const newOrder = {
-      id: get(id, '[0]') || '-',
+      id: get(id, '[0]'),
       shippingPrice: get(shippingPrice, '[0]') || '-',
       totalPrice: get(totalPrice, '[0]') || '-',
       platform: get(platform, '[0]') || '-',
