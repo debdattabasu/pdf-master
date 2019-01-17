@@ -6,7 +6,10 @@ export default function orders(state = [], action: Action) {
   switch (action.type) {
     // TODO add order duplication check
     case ADD_ORDER: {
-      return [...state, action]
+      const index = state.findIndex(el => el.id == action.id);
+      if(index == -1)
+        return [...state, action.event];
+      return state;
     }
     case FETCH_ORDERS: {
       return action.orders
