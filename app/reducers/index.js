@@ -5,6 +5,7 @@ import counter from './counter';
 import orders from './orders';
 import auth from './auth';
 import visibilityFilter from './visibilityFilter';
+import employees from './employees';
 
 export default function createRootReducer(history: History) {
   return combineReducers({
@@ -13,5 +14,6 @@ export default function createRootReducer(history: History) {
     orders,
     auth,
     visibilityFilter,
+    employees,
   });
 }

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { remote, ipcRenderer } from 'electron';
 import { Image, Container, Menu, Button} from 'semantic-ui-react'
 import OrdersTable from './orders-table';
 import Filters from './Filters';
+import routes from '../constants/routes';
 
 export default class Counter extends Component<Props> {
   componentDidMount() {
@@ -39,6 +41,9 @@ export default class Counter extends Component<Props> {
         <Menu>
           <Menu.Item>
             <Button primary onClick={this.importOrders}>Import Orders</Button>
+          </Menu.Item>
+          <Menu.Item>
+            <Link to={routes.EMPLOYEES}><Button primary>Employees</Button></Link> 
           </Menu.Item>
           <Menu.Menu position='right'>
             <Menu.Item>
