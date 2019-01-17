@@ -5,6 +5,12 @@ export const ADD_ORDER = 'ADD_ORDER';
 export const FETCH_ORDERS = 'FETCH_ORDERS';
 export const TOGGLE_ORDER = 'TOGGLE_ORDER';
 
+export const VisibilityFilters = {
+  SHOW_ALL: 'SHOW_ALL',
+  SHOW_COMPLETED: 'SHOW_COMPLETED',
+  SHOW_ACTIVE: 'SHOW_ACTIVE'
+}
+
 export function addPdfToList(order) {
   return (dispatch) => {
     const id = /(?<=Order ID: ).*/.exec(order) || /(?<=Order #).*/.exec(order);
@@ -47,3 +53,8 @@ export function toggleOrder({id, completed}) {
     dispatch({type: TOGGLE_ORDER, orderId: id});
   }
 }
+
+export const setVisibilityFilter = filter => ({
+  type: 'SET_VISIBILITY_FILTER',
+  filter
+})

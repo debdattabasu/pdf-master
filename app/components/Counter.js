@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { remote, ipcRenderer } from 'electron';
 import { Image, Container, Menu, Button} from 'semantic-ui-react'
 import OrdersTable from './orders-table';
+import Filters from './Filters';
 
 export default class Counter extends Component<Props> {
   componentDidMount() {
@@ -9,7 +10,7 @@ export default class Counter extends Component<Props> {
     fetchOrders();
   }
  
-  handleClick = () => {
+  importOrders = () => {
     const {addPdfToList} = this.props;
     const filters = [{name: 'Documents', extensions: ['pdf']}];
     const paths = remote.dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'], filters}) || [];
@@ -37,7 +38,7 @@ export default class Counter extends Component<Props> {
       <Container style={{ marginTop: '1em' }}>
         <Menu>
           <Menu.Item>
-            <Button primary onClick={this.handleClick}>Import Orders</Button>
+            <Button primary onClick={this.importOrders}>Import Orders</Button>
           </Menu.Item>
           <Menu.Menu position='right'>
             <Menu.Item>
@@ -50,7 +51,8 @@ export default class Counter extends Component<Props> {
             />
           </Menu.Menu>
         </Menu>
-          <OrdersTable orders={orders} onOrderToggle={this.onOrderToggle}/>
+        <Filters/>
+        <OrdersTable orders={orders} onOrderToggle={this.onOrderToggle}/>
       </Container>
     );
   }
