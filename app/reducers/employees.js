@@ -1,14 +1,12 @@
 import {FETCH_EMPLOYEES, ADD_EMPLOYEE} from '../actions/employees';
 
-const employeeExists = (employees, {name, surname}) => {
-  return employees.some((e) => e.name === name && e.surname === surname);
-}
+const employeeExists = (employees, nickName) => employees.some((e) => e.nickName === nickName);
 
 export default function orders(state = [], action: Action) {
   switch (action.type) {
     case ADD_EMPLOYEE: {
-      const {name, surname} = action;
-      if (employeeExists(state, {name, surname})) {
+      const {nickName} = action;
+      if (employeeExists(state, nickName)) {
         return state;
       } else {
         return [...state, action];
