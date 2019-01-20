@@ -24,9 +24,10 @@ export default function orders(state = [], action: Action) {
       );
     }
     case CHANGE_ASSIGNEE: {
+      const {assignee, assignedOn, completed} = action;
       return state.map(
         order =>
-          order.id === action.orderId ? { ...order, assignee: action.assignee} : order
+          order.id === action.orderId ? { ...order, assignee, assignedOn, completed} : order
       );
     }
     default:

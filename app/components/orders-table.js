@@ -21,12 +21,13 @@ function OrdersTable(props) {
   const ctaButton = (order) => <Checkbox checked={order.completed} toggle onChange={() => onOrderToggle(order)}/>
 
   const assigneeList = (order) => {
+    const {assignedOn, id, assignee} = order;
     return (
       <Dropdown 
         inline
         options={options}
-        defaultValue={order.assignee || null}
-        onChange={(event, data) => onAssigneeChange({...data, orderId: order.id})}
+        defaultValue={assignee || null}
+        onChange={(event, data) => onAssigneeChange({...data, orderId: id, assignedOn})}
       />
     )
   }
@@ -44,6 +45,7 @@ function OrdersTable(props) {
           <Table.HeaderCell>Order Registered</Table.HeaderCell>
           <Table.HeaderCell>Completed</Table.HeaderCell>
           <Table.HeaderCell>Assignee</Table.HeaderCell>
+          <Table.HeaderCell>First Assigned</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -59,6 +61,7 @@ function OrdersTable(props) {
               <Table.Cell>{new Date(order.timeRegistered).toLocaleDateString()}</Table.Cell>
               <Table.Cell>{ctaButton(order)}</Table.Cell>
               <Table.Cell>{assigneeList(order)}</Table.Cell>
+              <Table.Cell>{order.assignedOn ? new Date(order.assignedOn).toLocaleDateString() : '-'}</Table.Cell>
             </Table.Row>
           );
         }))}

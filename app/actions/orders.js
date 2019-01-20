@@ -56,11 +56,15 @@ export function toggleOrder({id, completed}) {
   }
 }
 
-export function onAssigneeChange({value, orderId, defaultValue}) {
+export function onAssigneeChange({value, orderId, defaultValue, assignedOn}) {
+  console.log('value, orderId, defaultValue, assignedOn: ', value, orderId, defaultValue, assignedOn);
   return (dispatch) => {
     if(defaultValue !== value) {
-      database.ref(`orders/${orderId}`).update({assignee: value});
-      dispatch({type: CHANGE_ASSIGNEE, orderId, assignee: value});
+      const dateAssigned = assignedOn ? assignedOn : Date.now();
+      const update = {assignedOn: dateAssigned, assignee: value, completed: true}
+
+      database.ref(`orders/${orderId}`).update(update);
+      dispatch({type: CHANGE_ASSIGNEE, orderId, ...update});
     }
   }
 }
