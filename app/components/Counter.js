@@ -8,8 +8,9 @@ import routes from '../constants/routes';
 
 export default class Counter extends Component<Props> {
   componentDidMount() {
-    const {fetchOrders} = this.props
+    const {fetchOrders, fetchEmployees} = this.props
     fetchOrders();
+    fetchEmployees();
   }
  
   importOrders = () => {
@@ -35,7 +36,8 @@ export default class Counter extends Component<Props> {
   }
 
   render() {
-    const {auth, orders} = this.props;
+    const {auth, orders, employees, onAssigneeChange} = this.props;
+
     return (
       <Container style={{ marginTop: '1em' }}>
         <Menu>
@@ -57,7 +59,7 @@ export default class Counter extends Component<Props> {
           </Menu.Menu>
         </Menu>
         <Filters/>
-        <OrdersTable orders={orders} onOrderToggle={this.onOrderToggle}/>
+        <OrdersTable employees={employees} orders={orders} onOrderToggle={this.onOrderToggle} onAssigneeChange={onAssigneeChange}/>
       </Container>
     );
   }

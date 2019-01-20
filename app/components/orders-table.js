@@ -1,13 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Table, Checkbox} from 'semantic-ui-react'
+import {Table, Checkbox, Dropdown} from 'semantic-ui-react'
 import _ from 'lodash';
 
+const mapEmployeesToOptions = (employees) => {
+  return _.map(employees, (el = {}) => {
+    return {
+      key: el.id,
+      text: el.nickName,
+      value: el.nickName,
+      image: el.image,
+    }
+  })
+}
 
 function OrdersTable(props) {
-  const { orders, onOrderToggle } = props;
+  const { orders, onOrderToggle, employees, onAssigneeChange } = props;
+  const options = mapEmployeesToOptions(employees);
 
   const ctaButton = (order) => <Checkbox checked={order.completed} toggle onChange={() => onOrderToggle(order)}/>
+
+  const assigneeList = (order) => {
+    return (
+      <Dropdown 
+        inline
+        options={options}
+        defaultValue={order.assignee || null}
+        onChange={(event, data) => onAssigneeChange({...data, orderId: order.id})}
+      />
+    )
+  }
 
   return (
     <Table compact>
@@ -21,6 +43,7 @@ function OrdersTable(props) {
           <Table.HeaderCell>ASIN</Table.HeaderCell>
           <Table.HeaderCell>Order Registered</Table.HeaderCell>
           <Table.HeaderCell>Completed</Table.HeaderCell>
+          <Table.HeaderCell>Assignee</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -35,6 +58,7 @@ function OrdersTable(props) {
               <Table.Cell>{order.asin}</Table.Cell>
               <Table.Cell>{new Date(order.timeRegistered).toLocaleDateString()}</Table.Cell>
               <Table.Cell>{ctaButton(order)}</Table.Cell>
+              <Table.Cell>{assigneeList(order)}</Table.Cell>
             </Table.Row>
           );
         }))}
@@ -46,6 +70,8 @@ function OrdersTable(props) {
 OrdersTable.propTypes = {
   orders: PropTypes.array.isRequired,
   onOrderToggle: PropTypes.func.isRequired,
+  onAssigneeChange: PropTypes.func.isRequired,
+  employees: PropTypes.array.isRequired,
 };
 
 export default OrdersTable;

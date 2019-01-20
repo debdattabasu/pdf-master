@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Counter from '../components/Counter';
 import * as OrderActions from '../actions/orders';
 import { signOut } from "../actions/auth";
+import * as EmployeeActions from '../actions/employees';
 
 const getVisibleOrders = (orders, filter) => {
   switch (filter) {
@@ -13,19 +14,20 @@ const getVisibleOrders = (orders, filter) => {
     case OrderActions.VisibilityFilters.SHOW_ACTIVE:
       return orders.filter(el => !el.completed)
     default:
-      throw new Error('Unknown filter: ' + filter)
+      throw new Error(`Unknown filter:  ${filter}`)
   }
 }
 
 function mapStateToProps(state, ownProps) {
   return {
     orders: getVisibleOrders(state.orders, state.visibilityFilter),
+    employees: state.employees,
     auth: state.auth,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({...OrderActions, signOut}, dispatch);
+  return bindActionCreators({...OrderActions, signOut, ...EmployeeActions}, dispatch);
 }
 
 export default connect(

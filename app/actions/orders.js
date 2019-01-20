@@ -4,6 +4,7 @@ import { ordersRef, database } from "../config/firebase";
 export const ADD_ORDER = 'ADD_ORDER';
 export const FETCH_ORDERS = 'FETCH_ORDERS';
 export const TOGGLE_ORDER = 'TOGGLE_ORDER';
+export const CHANGE_ASSIGNEE = 'CHANGE_ASSIGNEE';
 
 export const VisibilityFilters = {
   SHOW_ALL: 'SHOW_ALL',
@@ -26,6 +27,7 @@ export function addPdfToList(order) {
       platform: get(platform, '[0]') || '-',
       sku: get(sku, '[0]') || '-',
       asin: get(asin, '[0]') || '-',
+      assignee: '-',
       timeRegistered: Date.now(),
       completed: false,
     };
@@ -51,6 +53,15 @@ export function toggleOrder({id, completed}) {
   return (dispatch) => {
     database.ref(`orders/${id}`).update({completed: !completed});
     dispatch({type: TOGGLE_ORDER, orderId: id});
+  }
+}
+
+export function onAssigneeChange({value, orderId, defaultValue}) {
+  return (dispatch) => {
+    if(defaultValue !== value) {
+      database.ref(`orders/${orderId}`).update({assignee: value});
+      dispatch({type: CHANGE_ASSIGNEE, orderId, assignee: value});
+    }
   }
 }
 

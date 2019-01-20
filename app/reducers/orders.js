@@ -1,4 +1,4 @@
-import { ADD_ORDER, FETCH_ORDERS, TOGGLE_ORDER } from '../actions/orders';
+import { ADD_ORDER, FETCH_ORDERS, TOGGLE_ORDER, CHANGE_ASSIGNEE } from '../actions/orders';
 import type { Action } from './types';
 
 const orderExists = (orders, orderId) => {
@@ -21,6 +21,12 @@ export default function orders(state = [], action: Action) {
       return state.map(
         order =>
           order.id === action.orderId ? { ...order, completed: !order.completed } : order
+      );
+    }
+    case CHANGE_ASSIGNEE: {
+      return state.map(
+        order =>
+          order.id === action.orderId ? { ...order, assignee: action.assignee} : order
       );
     }
     default:
