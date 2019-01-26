@@ -33,7 +33,7 @@ function OrdersTable(props) {
   }
 
   return (
-    <Table compact="very">
+    <Table size="small" compact="very">
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>Order Id</Table.HeaderCell>
