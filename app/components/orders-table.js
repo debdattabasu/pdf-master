@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Table, Checkbox, Dropdown} from 'semantic-ui-react'
+import {Table, Checkbox, Dropdown, Popup, Icon} from 'semantic-ui-react'
 import _ from 'lodash';
 
 const mapEmployeesToOptions = (employees) => {
@@ -56,7 +56,12 @@ function OrdersTable(props) {
           return (
             <Table.Row key={order.id} positive={order.completed}>
               <Table.Cell>{order.id}</Table.Cell>
-              <Table.Cell>{order.productType}</Table.Cell>
+                <Popup
+                  wide
+                  key={order.id}
+                  trigger={<Table.Cell>{order.productType } <Icon name='info'/></Table.Cell>}
+                  content={order.item}
+                />
               <Table.Cell>{order.quantity}</Table.Cell>
               <Table.Cell>{order.shipTo}</Table.Cell>
               <Table.Cell>{order.shippingPrice}</Table.Cell>

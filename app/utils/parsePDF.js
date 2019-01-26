@@ -59,6 +59,7 @@ function parseAmazonOrder(order) {
     quantity: get(quantity, '[0]') ||  '-',
     platform,
     productType,
+    item: itemString,
   };
 };
 
@@ -84,6 +85,7 @@ function parseEtsyOrder(order) {
     quantity: get(quantity, '[0]') ||  '-',
     platform,
     productType,
+    item: itemString,
   };
 };
 
@@ -109,6 +111,7 @@ function parseEbayOrder(order) {
     quantity: get(quantity, '[0]') ||  '-',
     platform,
     productType,
+    item: itemString,
   };
 };
 
