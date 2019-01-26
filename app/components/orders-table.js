@@ -33,10 +33,11 @@ function OrdersTable(props) {
   }
 
   return (
-    <Table compact>
+    <Table compact="very">
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>Order Id</Table.HeaderCell>
+          <Table.HeaderCell>Ship To</Table.HeaderCell>
           <Table.HeaderCell>Shipping Price</Table.HeaderCell>
           <Table.HeaderCell>Total Price</Table.HeaderCell>
           <Table.HeaderCell>Platform</Table.HeaderCell>
@@ -53,6 +54,7 @@ function OrdersTable(props) {
           return (
             <Table.Row key={order.id} positive={order.completed}>
               <Table.Cell>{order.id}</Table.Cell>
+              <Table.Cell>{order.shipTo}</Table.Cell>
               <Table.Cell>{order.shippingPrice}</Table.Cell>
               <Table.Cell>{order.totalPrice}</Table.Cell>
               <Table.Cell>{order.platform}</Table.Cell>

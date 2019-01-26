@@ -14,12 +14,13 @@ export const VisibilityFilters = {
 
 export function addPdfToList(order) {
   return (dispatch) => {
-    const id = /(?<=Order ID: ).*/.exec(order) || /(?<=Order #).*/.exec(order);
-    const sku = /(?<=SKU: ).*/.exec(order);
-    const asin = /(?<=ASIN: ).*/.exec(order);
-    const shippingPrice = /(?<=Shipping total).*/.exec(order);
-    const totalPrice = /(?<=Grand total: ).*/.exec(order) || /(?<=Order total).*/.exec(order);
-    const platform =  /(?:Amazon)/.exec(order) || /(?:etsy)/.exec(order) || '-';
+    const id = /(?<=Order ID: ).*/i.exec(order) || /(?<=Order #).*/i.exec(order);
+    const sku = /(?<=SKU: ).*/i.exec(order);
+    const asin = /(?<=ASIN: ).*/i.exec(order);
+    const shippingPrice = /(?<=Shipping total).*/i.exec(order);
+    const totalPrice = /(?<=Grand total: ).*/i.exec(order) || /(?<=Order total).*/i.exec(order);
+    const platform =  /(?:Amazon)/i.exec(order) || /(?:etsy)/i.exec(order) || '-';
+    const shipTo =  /(?<=Ship To:)[^\0]*?(?=Order ID:)/gmi.exec(order) || '-';
     const newOrder = {
       id: get(id, '[0]'),
       shippingPrice: get(shippingPrice, '[0]') || '-',
@@ -27,10 +28,13 @@ export function addPdfToList(order) {
       platform: get(platform, '[0]') || '-',
       sku: get(sku, '[0]') || '-',
       asin: get(asin, '[0]') || '-',
+      shipTo: get(shipTo, '[0]') || '-',
       assignee: '-',
       timeRegistered: Date.now(),
       completed: false,
     };
+
+    dispatch({type: ADD_ORDER, ...newOrder})
 
     ordersRef
       .child(newOrder.id)

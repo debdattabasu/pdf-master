@@ -39,7 +39,7 @@ export default class Counter extends Component<Props> {
     const {auth, orders, employees, onAssigneeChange} = this.props;
 
     return (
-      <Container style={{ marginTop: '1em' }}>
+      <Container fluid style={{ padding: '2em'}}>
         <Menu>
           <Menu.Item>
             <Button primary onClick={this.importOrders}>Import Orders</Button>
