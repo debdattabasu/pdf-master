@@ -41,7 +41,6 @@ export function toggleOrder({id, completed}) {
 }
 
 export function onAssigneeChange({value, orderId, defaultValue, assignedOn}) {
-  console.log('value, orderId, defaultValue, assignedOn: ', value, orderId, defaultValue, assignedOn);
   return (dispatch) => {
     if(defaultValue !== value) {
       const dateAssigned = assignedOn ? assignedOn : Date.now();
