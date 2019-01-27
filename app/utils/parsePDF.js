@@ -1,13 +1,5 @@
 import {get} from 'lodash';
-
-const PRODUCTS = ['T-shirt/Shirt', 'child', 'Hoodie', 'Crewneck', 'Bags', 'Case', 'Mug', 'Pillow', 'T­shirt',  'marškinėliai', 'capuche'];
-const PLATFORMS = {
-  ETSY: 'Etsy',
-  AMAZON: 'Amazon',
-  EBAY: 'Ebay',
-  ECWID: 'Ecwid',
-  SHOPIFY: 'Shopify',
-};
+import {PRODUCTS, PLATFORMS} from '../constants/domain'
 
 function parseOrder(order) {
   console.log('order: ', order);

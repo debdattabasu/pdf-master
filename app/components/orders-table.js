@@ -2,17 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Table, Checkbox, Dropdown, Popup, Icon} from 'semantic-ui-react'
 import _ from 'lodash';
-
-const mapEmployeesToOptions = (employees) => {
-  return _.map(employees, (el = {}) => {
-    return {
-      key: el.id,
-      text: el.nickName,
-      value: el.nickName,
-      image: el.image,
-    }
-  })
-}
+import {mapEmployeesToOptions} from '../utils/helpers';
 
 function OrdersTable(props) {
   const { orders, onOrderToggle, employees, onAssigneeChange } = props;
