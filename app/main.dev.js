@@ -72,6 +72,21 @@ ipcMain.on('scrapePDF', (event, path) => {
     });
 });
 
+// ipcMain.on('scrapePDF', (event, path) => {
+//   var extract = require('pdf-text-extract')
+//   var options = {
+//     layout: 'htmlmeta'
+//   }
+//   extract(path, options, function (err, pages) {
+//     if (err) {
+//       console.dir(err)
+//       return
+//     }
+//     event.returnValue = {text: pages[0].toString()}
+//     console.log('extracted pages', pages[0])
+//   })
+// });
+
 app.on('ready', async () => {
   if (
     process.env.NODE_ENV === 'development' ||

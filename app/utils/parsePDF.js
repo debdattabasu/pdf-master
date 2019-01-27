@@ -1,10 +1,11 @@
 import {get} from 'lodash';
 
-const PRODUCTS = ['T-shirt/Shirt', 'child', 'Hoodie', 'Crewneck', 'Bags', 'Case', 'Mug', 'Pillow', 'T­shirt'];
+const PRODUCTS = ['T-shirt/Shirt', 'child', 'Hoodie', 'Crewneck', 'Bags', 'Case', 'Mug', 'Pillow', 'T­shirt',  'marškinėliai'];
 const PLATFORMS = {
   ETSY: 'Etsy',
   AMAZON: 'Amazon',
   EBAY: 'Ebay',
+  ECWID: 'Ecwid',
 };
 
 function parseOrder(order) {
@@ -24,6 +25,7 @@ function determinePlatform(order) {
   if(/(?:Amazon)/i.test(order)) return PLATFORMS.AMAZON;
   if(/(Do the green thing)/i.test(order)) return PLATFORMS.ETSY;
   if(/(ebay.com)/i.test(order)) return PLATFORMS.EBAY;
+  if(/(mano atributika)/i.test(order)) return PLATFORMS.ECWID;
 
   return undefined;
 }
@@ -33,6 +35,7 @@ function getOrderDetails({platform, order}){
       case PLATFORMS.AMAZON: return parseAmazonOrder(order);
       case PLATFORMS.ETSY: return parseEtsyOrder(order);
       case PLATFORMS.EBAY: return parseEbayOrder(order);
+      case PLATFORMS.ECWID: return parseEcwidOrder(order);
       default: return {};      
   }
 }
@@ -100,6 +103,33 @@ function parseEbayOrder(order) {
   const itemString = get(order.match(/(?<=on eBay.)[^\0]*?(?=Subtotal:)/gmi), '[0]') || '';
   const quantity = itemString.match(/(?<=Qty:)\d/i);
   const productType = PRODUCTS.find((type) => itemString.includes(type));
+
+  return {
+    id: get(id, '[0]'),
+    shippingPrice: get(shippingPrice, '[0]') || '-',
+    totalPrice: get(totalPrice, '[0]') || '-',
+    sku: get(sku, '[0]') || '-',
+    asin: get(asin, '[0]') || '-',
+    shipTo: get(shipTo, '[0]') || '-',
+    quantity: get(quantity, '[0]') ||  '-',
+    platform,
+    productType,
+    item: itemString,
+  };
+};
+
+function parseEcwidOrder(order) {
+  const id = /(?<=Order.*#).*/i.exec(order);
+  const sku = /(?<=SKU: ).*/.exec(order);
+  const asin = /(?<=ASIN: ).*/i.exec(order);
+  const shipTo = order.match(/(?<=Order.*\n)[^\0]*?(?=\n\d\d\n)/gmi);
+  const shippingPrice = '-';
+  const totalPrice = '-';
+  const platform =  PLATFORMS.ECWID;
+  const itemString = order.match(/(\n\d\d\n)[^\0]*?(?=\d\d\d\d-\d\d-\d\d)/gmi);
+  const items = itemString.join('');
+  const quantity = items.match(/.*(?=\d\n)/);
+  const productType = PRODUCTS.find((type) => items.includes(type));
 
   return {
     id: get(id, '[0]'),
