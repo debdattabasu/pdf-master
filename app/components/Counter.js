@@ -42,10 +42,13 @@ export default class Counter extends Component<Props> {
       <Container fluid style={{ padding: '2em'}}>
         <Menu>
           <Menu.Item>
-            <Button primary onClick={this.importOrders}>Import Orders</Button>
+            <Button primary size='small' onClick={this.importOrders}>Import Orders</Button>
           </Menu.Item>
           <Menu.Item>
-            <Link to={routes.EMPLOYEES}><Button primary>Employees</Button></Link> 
+            <Link to={routes.EMPLOYEES}><Button primary size='small'>Employees</Button></Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link to={routes.GENERATE_TASK}><Button primary size='small'>Generate Task</Button></Link>
           </Menu.Item>
           <Menu.Menu position='right'>
             <Menu.Item>

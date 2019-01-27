@@ -1,5 +1,6 @@
 {
   "HOME": "/",
   "COUNTER": "/counter",
-  "EMPLOYEES": "/employees"
+  "EMPLOYEES": "/employees",
+  "GENERATE_TASK": "/generate_task"
 }
