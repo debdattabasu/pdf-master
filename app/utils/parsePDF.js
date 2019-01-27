@@ -1,11 +1,12 @@
 import {get} from 'lodash';
 
-const PRODUCTS = ['T-shirt/Shirt', 'child', 'Hoodie', 'Crewneck', 'Bags', 'Case', 'Mug', 'Pillow', 'T­shirt',  'marškinėliai'];
+const PRODUCTS = ['T-shirt/Shirt', 'child', 'Hoodie', 'Crewneck', 'Bags', 'Case', 'Mug', 'Pillow', 'T­shirt',  'marškinėliai', 'capuche'];
 const PLATFORMS = {
   ETSY: 'Etsy',
   AMAZON: 'Amazon',
   EBAY: 'Ebay',
   ECWID: 'Ecwid',
+  SHOPIFY: 'Shopify',
 };
 
 function parseOrder(order) {
@@ -26,6 +27,7 @@ function determinePlatform(order) {
   if(/(Do the green thing)/i.test(order)) return PLATFORMS.ETSY;
   if(/(ebay.com)/i.test(order)) return PLATFORMS.EBAY;
   if(/(mano atributika)/i.test(order)) return PLATFORMS.ECWID;
+  if(/(myshopify)/i.test(order)) return PLATFORMS.SHOPIFY;
 
   return undefined;
 }
@@ -36,6 +38,7 @@ function getOrderDetails({platform, order}){
       case PLATFORMS.ETSY: return parseEtsyOrder(order);
       case PLATFORMS.EBAY: return parseEbayOrder(order);
       case PLATFORMS.ECWID: return parseEcwidOrder(order);
+      case PLATFORMS.SHOPIFY: return parseShopifyOrder(order);
       default: return {};      
   }
 }
@@ -139,6 +142,32 @@ function parseEcwidOrder(order) {
     asin: get(asin, '[0]') || '-',
     shipTo: get(shipTo, '[0]') || '-',
     quantity: get(quantity, '[0]') ||  '-',
+    platform,
+    productType,
+    item: itemString,
+  };
+};
+
+function parseShopifyOrder(order) {
+  const id = /(?<=Invoice for #).*/i.exec(order);
+  const sku = /(?<=SKU: ).*/i.exec(order);
+  const asin = /(?<=ASIN: ).*/i.exec(order);
+  const shipTo = order.match(/(?<=Shipping Details)[^\0]*?(?=If you have any)/gmi);
+  const shippingPrice = '-';
+  const totalPrice = /(?<=Total price:).*/i.exec(order);
+  const platform =  PLATFORMS.SHOPIFY;
+  const itemString = get(order.match(/(?<=QuantityImageItemPrice)[^\0]*?(?=Payment Details)/gmi), '[0]') || '';
+  const quantity = itemString.match(/(\d x)/);
+  const productType = PRODUCTS.find((type) => itemString.includes(type)) || '-';
+
+  return {
+    id: get(id, '[0]'),
+    shippingPrice: get(shippingPrice, '[0]') || '-',
+    totalPrice: get(totalPrice, '[0]') || '-',
+    sku: get(sku, '[0]') || '-',
+    asin: get(asin, '[0]') || '-',
+    shipTo: get(shipTo, '[0]') || '-',
+    quantity: get(quantity, '[0][0]') ||  '-',
     platform,
     productType,
     item: itemString,
