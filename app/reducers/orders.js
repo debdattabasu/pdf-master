@@ -10,9 +10,8 @@ export default function orders(state = [], action: Action) {
     case ADD_ORDER: {
       if (orderExists(state, action.id)) {
         return state;
-      } else {
-        return [...state, action];
       }
+      return [...state, action];
     }
     case FETCH_ORDERS: {
       return action.orders

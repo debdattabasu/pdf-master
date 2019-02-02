@@ -1,5 +1,6 @@
 import { ordersRef, database } from "../config/firebase";
 import {parseOrder} from '../utils/parsePDF';
+import _ from 'lodash';
 
 export const ADD_ORDER = 'ADD_ORDER';
 export const FETCH_ORDERS = 'FETCH_ORDERS';
@@ -49,6 +50,21 @@ export function onAssigneeChange({value, orderId, defaultValue, assignedOn}) {
       database.ref(`orders/${orderId}`).update(update);
       dispatch({type: CHANGE_ASSIGNEE, orderId, ...update});
     }
+  }
+}
+
+export function getTasks({assignee, orderLimit, productTypes}) {
+  return (dispatch, getState) => {
+    const {orders} = getState();
+    const tasks = _.filter(orders, (order) => {
+      return !!productTypes.includes(order.productType) && order.completed === false
+    });
+
+    if(orderLimit || orderLimit > 0) {
+      return _.slice(tasks, 0, orderLimit)
+    }
+
+    return tasks;
   }
 }
 
