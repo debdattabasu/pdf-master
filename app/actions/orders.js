@@ -68,6 +68,21 @@ export function getTasks({assignee, orderLimit, productTypes}) {
   }
 }
 
+export function updateMultipleOrderAssignees({orders, employee}) {
+  return (dispatch, getState) => {
+    orders.forEach((order) => {
+      const {assignedOn, id} = order;
+      const dateAssigned = assignedOn ? assignedOn : Date.now();
+      const update = {assignedOn: dateAssigned, assignee: employee, completed: true}
+      database.ref(`orders/${id}`)
+      .update(update)
+      .then(dispatch({type: CHANGE_ASSIGNEE, orderId: id, ...update}))
+      .catch((err) => console.log('error!!!', err));
+    });
+  }
+}
+
+
 export const setVisibilityFilter = filter => ({
   type: 'SET_VISIBILITY_FILTER',
   filter
