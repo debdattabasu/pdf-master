@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react';
+import { Button, Form, Grid, Image, Segment } from 'semantic-ui-react';
 
 function SignIn(props) {
   const { handleChange, handleSubmit } = props;
@@ -20,9 +20,9 @@ function SignIn(props) {
           verticalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color="teal" textAlign="center">
-              PRESSCCOO
-            </Header>
+            <div style={{padding: 10}}>
+              <Image src='../resources/pressco-logo.png' size='tiny' circular centered/>
+            </div>
             <Form size="large">
               <Segment stacked>
                 <Form.Input
@@ -43,7 +43,7 @@ function SignIn(props) {
                   onChange={handleChange}
                 />
                 <Button
-                  color="teal"
+                  color="blue"
                   fluid
                   size="large"
                   onClick={handleSubmit}
