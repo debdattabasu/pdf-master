@@ -14,6 +14,7 @@ import { app, BrowserWindow, ipcMain} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+import * as pdfmake from 'pdfmake'
 
 const pdf = require('pdf-parse');
 const fs = require('fs');
@@ -87,6 +88,29 @@ ipcMain.on('scrapePDF', (event, path) => {
 //   })
 // });
 
+
+//DOCS: https://pdfmake.github.io/docs/
+ipcMain.on('generateTaskPDF', (event, path, content) => {
+  const fonts = {
+    Roboto: {
+      normal: 'resources/Roboto-Regular.ttf',
+      bold: 'resources/Roboto-Medium.ttf',
+      italics: 'resources/Roboto-Italic.ttf',
+      bolditalics: 'resources/Roboto-MediumItalic.ttf'
+    }
+  };
+  const options = {
+    pageMargins: [ 10, 10, 10, 10 ],
+    pageOrientation: 'landscape',
+    pageSize: 'A4',
+  };
+  const printer = new pdfmake.default(fonts);
+  const pdfDoc = printer.createPdfKitDocument(content, options);
+  pdfDoc.pipe(fs.createWriteStream(`${path}.pdf`));
+  pdfDoc.end();
+  event.returnValue = 'DONE'
+});
+
 app.on('ready', async () => {
   if (
     process.env.NODE_ENV === 'development' ||
@@ -97,7 +121,7 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
+    width: 1200,
     height: 728
   });
 

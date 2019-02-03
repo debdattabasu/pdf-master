@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { ipcRenderer, remote } from 'electron';
 import { Link } from 'react-router-dom';
 import { Container, Button, Header, Divider, Form, Modal } from 'semantic-ui-react'
 import routes from '../constants/routes';
 import {mapEmployeesToOptions, mapProductsToOptions} from '../utils/helpers';
 import {PRODUCTS} from '../constants/domain'
 import OrdersTable from './orders-table';
+import {generatePdfTable} from '../utils/helpers';
 
 const initialState = {
   selectedProducts: [],
@@ -36,8 +38,12 @@ export default class GenerateTask extends Component<Props> {
     const {updateMultipleOrderAssignees} = this.props;
     const {tasks, employee} = this.state;
     try{
-      const tmp = updateMultipleOrderAssignees({orders: tasks, employee});
-      this.setState(initialState);
+      updateMultipleOrderAssignees({orders: tasks, employee});
+      const content = generatePdfTable({tasks, employee})
+      remote.dialog.showSaveDialog(null, {}, (path) => {
+        ipcRenderer.sendSync('generateTaskPDF', path, content)
+        this.setState(initialState);
+      });
     } catch {
       this.setState({error: true});
     }

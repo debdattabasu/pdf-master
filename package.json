@@ -267,6 +267,8 @@
     "pdf-parse": "^1.1.1",
     "pdf-text-extract": "^1.5.0",
     "pdf2json": "^1.1.7",
+    "pdfkit": "^0.9.0",
+    "pdfmake": "^0.1.50",
     "pdfreader": "^1.0.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",

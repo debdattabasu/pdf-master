@@ -49,7 +49,7 @@ function OrdersTable(props) {
                 <Popup
                   wide
                   key={order.id}
-                  trigger={<Table.Cell>{order.productType } <Icon name='info'/></Table.Cell>}
+                  trigger={<Table.Cell>{order.productType} <Icon name='info'/></Table.Cell>}
                   content={order.item}
                 />
               <Table.Cell>{order.quantity}</Table.Cell>
