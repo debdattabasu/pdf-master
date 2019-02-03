@@ -14,10 +14,11 @@ import { app, BrowserWindow, ipcMain, screen} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-import * as pdfmake from 'pdfmake'
+// import * as pdfmake from 'pdfmake'
 
 const pdf = require('pdf-parse');
 const fs = require('fs');
+const path = require('path')
 
 export default class AppUpdater {
   constructor() {
@@ -120,8 +121,8 @@ app.on('ready', async () => {
   }
 
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
-  mainWindow = new BrowserWindow({ width, height })
-
+  const icon = path.join(__dirname, 'app.icns');
+  mainWindow = new BrowserWindow({ width, height, icon});
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event

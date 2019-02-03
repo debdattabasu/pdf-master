@@ -21,7 +21,7 @@ function SignIn(props) {
         >
           <Grid.Column style={{ maxWidth: 450 }}>
             <div style={{padding: 10}}>
-              <Image src='../resources/pressco-logo.png' size='tiny' circular centered/>
+              <Image src={`file://${__dirname}/../resources/pressco-logo.png`} size='tiny' circular centered/>
             </div>
             <Form size="large">
               <Segment stacked>
