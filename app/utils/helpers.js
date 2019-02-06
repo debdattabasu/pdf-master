@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {PRODUCTS} from '../constants/domain'
 
 export const mapEmployeesToOptions = (employees) => {
   return _.map(employees, (el = {}) => {
@@ -19,6 +20,14 @@ export const mapProductsToOptions = (products) => {
       value: el,
     }
   });
+}
+
+export function formatOrderId(id = [], index) {
+  return id[0] ? `${id}--${index}` : undefined;
+}
+
+export function getProductType(item) {
+  return _.find(PRODUCTS, (type) => item.includes(type)) || '-';
 }
 
 //DOCS: https://pdfmake.github.io/docs/
