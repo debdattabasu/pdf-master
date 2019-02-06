@@ -150,31 +150,33 @@ function parseEcwidOrder(order) {
   });
 }
 
-// SHOPIFY needs multiple item support
 function parseShopifyOrder(order) {
   const id = /(?<=Invoice for #).*/i.exec(order);
-  const sku = /(?<=SKU: ).*/i.exec(order);
-  const asin = /(?<=ASIN: ).*/i.exec(order);
   const shipTo = order.match(/(?<=Shipping Details)[^\0]*?(?=If you have any)/gmi);
   const shippingPrice = '-';
   const totalPrice = /(?<=Total price:).*/i.exec(order);
   const platform =  PLATFORMS.SHOPIFY;
-  const itemString = get(order.match(/(?<=QuantityImageItemPrice)[^\0]*?(?=Payment Details)/gmi), '[0]') || '';
-  const quantity = itemString.match(/(\d x)/);
-  const productType = getProductType(itemString);
-
-  return [{
-    id: get(id, '[0]'),
-    shippingPrice: get(shippingPrice, '[0]') || '-',
-    totalPrice: get(totalPrice, '[0]') || '-',
-    sku: get(sku, '[0]') || '-',
-    asin: get(asin, '[0]') || '-',
-    shipTo: get(shipTo, '[0]') || '-',
-    quantity: get(quantity, '[0][0]') ||  '-',
-    platform,
-    productType,
-    item: itemString,
-  }];
+  const items = order.match(/(\d+.*x)[^\0]*?(\d+.\d\d)/gmi) || [];
+  
+  return items.map((item, index) => {
+    const asin = /(?<=ASIN: ).*/i.exec(item);
+    const sku = /(?<=SKU: ).*/i.exec(item);
+    const productType = getProductType(item);
+    const quantity = item.match(/(\d+ x)/);
+    
+    return {
+      id: formatOrderId(id, index),
+      shippingPrice: get(shippingPrice, '[0]') || '-',
+      totalPrice: get(totalPrice, '[0]') || '-',
+      sku: get(sku, '[0]') || '-',
+      asin: get(asin, '[0]') || '-',
+      shipTo: get(shipTo, '[0]') || '-',
+      quantity: get(quantity, '[0]') ||  '-',
+      platform,
+      productType,
+      item,
+    };
+  })
 }
 
 function formatOrderId(id = [], index) {
