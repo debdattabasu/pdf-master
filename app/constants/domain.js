@@ -1,4 +1,4 @@
-export const PRODUCTS = ['T-shirt/Shirt', 'child', 'Hoodie', 'Crewneck', 'Bags', 'Case', 'Mug', 'Pillow', 'T­shirt',  'marškinėliai', 'capuche'];
+export const PRODUCTS = ['T-shirt/Shirt', 'T-Shirt', 'T­shirt', 'child', 'Hoodie', 'Crewneck', 'Bags', 'Case', 'Mug', 'Pillow',  'marškinėliai', 'capuche'];
 export const PLATFORMS = {
   ETSY: 'Etsy',
   AMAZON: 'Amazon',

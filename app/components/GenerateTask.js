@@ -38,14 +38,15 @@ export default class GenerateTask extends Component<Props> {
     const {updateMultipleOrderAssignees} = this.props;
     const {tasks, employee} = this.state;
     try{
-      updateMultipleOrderAssignees({orders: tasks, employee});
       const content = generatePdfTable({tasks, employee})
       remote.dialog.showSaveDialog(null, {}, (path) => {
         ipcRenderer.sendSync('generateTaskPDF', path, content)
-        this.setState(initialState);
       });
     } catch {
       this.setState({error: true});
+    } finally {
+      updateMultipleOrderAssignees({orders: tasks, employee});
+      this.setState(initialState);
     }
   }
 

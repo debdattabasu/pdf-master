@@ -15,13 +15,17 @@ export const VisibilityFilters = {
 
 export function addPdfToList(order) {
   return (dispatch) => {
-    const newOrder = parseOrder(order);
+    const newOrders = parseOrder(order);
 
-    ordersRef
-      .child(newOrder.id)
-      .set(newOrder)
-      .then(dispatch({type: ADD_ORDER, ...newOrder}))
-      .catch((err) => console.log('error!!!', err))
+    newOrders.forEach((newOrder) => {
+      if(newOrder.id) {
+        ordersRef
+          .child(newOrder.id)
+          .set(newOrder)
+          .then(dispatch({type: ADD_ORDER, ...newOrder}))
+          .catch((err) => console.log('error!!!', err))
+      }
+    })
   };
 }
 
@@ -53,7 +57,7 @@ export function onAssigneeChange({value, orderId, defaultValue, assignedOn}) {
   }
 }
 
-export function getTasks({assignee, orderLimit, productTypes}) {
+export function getTasks({orderLimit, productTypes}) {
   return (dispatch, getState) => {
     const {orders} = getState();
     const tasks = _.filter(orders, (order) => {

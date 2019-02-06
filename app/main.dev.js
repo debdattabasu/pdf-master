@@ -14,7 +14,7 @@ import { app, BrowserWindow, ipcMain, screen} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-// import * as pdfmake from 'pdfmake'
+import * as pdfmake from 'pdfmake'
 
 const pdf = require('pdf-parse');
 const fs = require('fs');
