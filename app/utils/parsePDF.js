@@ -36,7 +36,7 @@ function getOrderDetails({platform, order}){
       case PLATFORMS.EBAY: return parseEbayOrder(order);
       case PLATFORMS.ECWID: return parseEcwidOrder(order);
       case PLATFORMS.SHOPIFY: return parseShopifyOrder(order);
-      default: return {};      
+      default: return [];      
   }
 }
 

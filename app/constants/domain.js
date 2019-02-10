@@ -6,6 +6,7 @@ export const LANGUAGES = {
   FRENCH: 'fra',
   ITALIAN: 'ita',
   SPANISH: 'spa',
+  SCOTTISH: 'sco',
 }
 
 export const PLATFORMS = {
