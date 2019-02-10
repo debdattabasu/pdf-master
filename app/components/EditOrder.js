@@ -36,8 +36,8 @@ export default class GenerateTask extends Component<Props> {
           </Link>
           <Header
             as='h2'
-            content={`Order ID: ${match.params.id}`}
-            subheader='Edit order shipping address'
+            content='Edit order'
+            subheader={`Order ID: ${match.params.id}`}
           />
         </div>
         <Divider hidden/>
