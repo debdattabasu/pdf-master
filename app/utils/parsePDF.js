@@ -76,8 +76,8 @@ function parseEbayOrder(order) {
   const id = order.match(/(?<=transid=)[^\0]*?(?=\/)/gmi);
   const sku = /(?<=SKU: ).*/.exec(order);
   const asin = /(?<=ASIN: ).*/i.exec(order);
-  const shipTo = order.match(/(?<=LT)[^\0]*?(?=Ship to)/gmi);
-  const shippingPrice = /(?<=Shipping and handling:).*/i.exec(order);
+  const shipTo = order.match(/(?<=LT)[^\0]*?(?=Ship.*to)/gmi);
+  const shippingPrice = /(?<=Shipping.*and.*handling:).*/i.exec(order);
   const totalPrice = /(?<=Total:).*/.exec(order);
   const platform =  PLATFORMS.EBAY;
   const itemString = get(order.match(/(?<=on eBay.)[^\0]*?(?=Subtotal:)/gmi), '[0]') || '';

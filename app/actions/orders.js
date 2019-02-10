@@ -31,7 +31,7 @@ export function addPdfToList(order) {
 }
 
 export const fetchOrders = () => async dispatch => {
-  ordersRef.once('value', (snapshot) => {
+  ordersRef.orderByChild('timeRegistered').once('value', (snapshot) => {
     if (snapshot.val()) {
       const orders = Object.keys(snapshot.val()).map(i => snapshot.val()[i]);
       const sortedOrders = _.sortBy(orders, ['rating', 'timeRegistered']);
