@@ -43,7 +43,7 @@ export default class GenerateTask extends Component<Props> {
         <Divider hidden/>
         <Form>
         <Form.TextArea name="shipTo" label='Ship To' onChange={this.handleChange} value={shipTo} />
-        <Form.Button disabled={disabled} onClick={this.saveOrder}>Save</Form.Button>
+        <Form.Button positive disabled={disabled} onClick={this.saveOrder}>Save</Form.Button>
       </Form>
       </Container>
     );
