@@ -14,6 +14,7 @@ function parseOrder({language, order}){
       case LANGUAGES.GERMAN: return parseGerman(order);
       case LANGUAGES.FRENCH: return parseFrench(order);
       case LANGUAGES.ITALIAN: return parseItalian(order);
+      case LANGUAGES.SPANISH: return parseSpanish(order);
       default: return {};      
   }
 }
@@ -112,6 +113,35 @@ function parseItalian(order) {
   const totalPrice = /(?<=Tot.:.*).*/i.exec(order);
   const platform = PLATFORMS.AMAZON;
   const shipTo =  /(?<=Spedire.*a:)[^\0]*?(?=Numero.*dell'ordine:)/gmi.exec(order) || '-';
+
+  return items.map((item, index) => {
+    const quantity = item.match(/\d+/) || [];
+    const productType = getProductType(item);
+    const asin = /(?<=ASIN: ).*/i.exec(item);
+    const sku = /(?<=SKU: ).*/i.exec(item);
+  
+    return {
+      id: formatOrderId(id, index),
+      shippingPrice: get(shippingPrice, '[0]') || '-',
+      totalPrice: get(totalPrice, '[0]') || '-',
+      sku: get(sku, '[0]') || '-',
+      asin: get(asin, '[0]') || '-',
+      shipTo: get(shipTo, '[0]') || '-',
+      quantity: get(quantity, '[0]') ||  '-',
+      platform,
+      productType,
+      item,
+    };
+  });
+}
+
+function parseSpanish(order) {
+  const items = order.match(/(?<=Totales.*del.*pedido|Total.*del.*artículo.*\n)[^\0]*?(?=Total.*del.*artículo)/gm) || []; // CASE SENSITIVE!!!
+  const id = /(?<=Nº.*de.*pedido:).*/i.exec(order) || [];
+  const shippingPrice = /(?<=Total.*del.*envío).*/i.exec(order);
+  const totalPrice = /(?<=Suma.*total:.*).*/i.exec(order);
+  const platform = PLATFORMS.AMAZON;
+  const shipTo =  /(?<=Enviar a:)[^\0]*?(?=Nº.*de.*pedido:)/gmi.exec(order) || '-';
 
   return items.map((item, index) => {
     const quantity = item.match(/\d+/) || [];

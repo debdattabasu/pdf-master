@@ -5,7 +5,7 @@ export const LANGUAGES = {
   GERMAN: 'deu',
   FRENCH: 'fra',
   ITALIAN: 'ita',
-  STANISH: 'spa'
+  SPANISH: 'spa',
 }
 
 export const PLATFORMS = {
