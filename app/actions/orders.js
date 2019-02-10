@@ -62,9 +62,17 @@ export function onAssigneeChange({value, orderId, defaultValue, assignedOn}) {
 export function getTasks({orderLimit, productTypes}) {
   return (dispatch, getState) => {
     const {orders} = getState();
-    const tasks = _.filter(orders, (order) => {
-      return !!productTypes.includes(order.productType) && order.completed === false
-    });
+    let tasks = []
+
+    if(productTypes.length === 0) {
+      tasks = _.filter(orders, (order) => order.completed === false);
+    }
+
+    if(productTypes.length > 0) {
+      tasks = _.filter(orders, (order) => {
+        return order.completed === false && !!productTypes.includes(order.productType) 
+      });
+    }
 
     if(orderLimit || orderLimit > 0) {
       return _.slice(tasks, 0, orderLimit)

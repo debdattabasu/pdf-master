@@ -52,17 +52,17 @@ export default class GenerateTask extends Component<Props> {
 
   renderForm = () => {
     const {employees} = this.props;
-    const {selectedProducts, employee, tasks} = this.state;
+    const {employee, tasks} = this.state;
     const employeeOptions = mapEmployeesToOptions(employees);
     const productOptions = mapProductsToOptions(PRODUCTS);
-    const previewEnabled = employee && selectedProducts.length > 0;
+    const previewEnabled = !!employee;
     const hasTasks = tasks.length > 0;
 
     return (
       <Form>
         <Form.Group widths='equal'>
-          <Form.Select name="selectedProducts" onChange={this.handleChange} fluid label='Product Types' options={productOptions} placeholder='Products' multiple selection required/>
           <Form.Select name="employee" onChange={this.handleChange} fluid label='Employee' options={employeeOptions} placeholder='Pick One' required width={5}/>
+          <Form.Select name="selectedProducts" onChange={this.handleChange} fluid label='Product Types' options={productOptions} placeholder='Leaving blank will show all' multiple selection/>
           <Form.Input name="count" onChange={this.handleChange} fluid label='Order count' placeholder='Number of orders' type="number" width={5}/>
         </Form.Group>
         <Form.Group>
