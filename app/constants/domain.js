@@ -1,5 +1,13 @@
 export const PRODUCTS = ['T-shirt/Shirt', 'T-Shirt', 'T­shirt', 'child', 'Hoodie', 'Crewneck', 'Bags', 'Case', 'Mug', 'Pillow',  'marškinėliai', 'capuche'];
 
+export const LANGUAGES = {
+  ENGLISH: 'eng',
+  GERMAN: 'deu',
+  FRENCH: 'fra',
+  ITALIAN: 'ita',
+  STANISH: 'spa'
+}
+
 export const PLATFORMS = {
   ETSY: 'Etsy',
   AMAZON: 'Amazon',
