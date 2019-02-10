@@ -9,7 +9,7 @@ export function parseAmazonOrder(order) {
 }
 
 function parseOrder({language, order}){
-  switch(language){   
+  switch(language){  
       case LANGUAGES.ENGLISH: return parseEnglish(order);
       case LANGUAGES.SCOTTISH: return parseEnglish(order);
       case LANGUAGES.GERMAN: return parseGerman(order);

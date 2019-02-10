@@ -1,10 +1,11 @@
 
 Todo:
-  ☐ Multilanguage Amazon supprot
+  ✔ Multilanguage Amazon supprot @done(19-02-10 16:04)
   ✔ Multiple item shopify support @done(19-02-06 20:40)
   ✔ Fix ebay ship to @done(19-02-10 13:14)
   ✔ Sort by urgency platform and country @done(19-02-10 13:08)
-  ☐ Real time updates
-  ☐ Edit shipping address
-  ☐ Remove some columns from export table
+  ✔ Remove some columns from export table @done(19-02-10 16:16)
   ☐ Add '-' in exporting as a label
+  ☐ Edit shipping address
+  ☐ Real time updates
+  ☐ Show an error if a pdf was not added to the list

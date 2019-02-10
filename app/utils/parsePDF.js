@@ -47,7 +47,7 @@ function parseEtsyOrder(order) {
   const totalPrice = /(?<=Order total).*/i.exec(order);
   const platform =  PLATFORMS.ETSY;
   const shipTo =  order.match(/(?<=Ship to)[^\0]*?(?=Scheduled to)/gmi) || '-';
-  const rating = 40; // HARDCODED RATING!!!!! ===================================>>>>>>>>>>> HACK
+  const rating = 40; // OVERRIDE THE RATING
 
   return items.map((item, index) => {
     const sku = /(?<=SKU: ).*/i.exec(item);

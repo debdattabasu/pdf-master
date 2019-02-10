@@ -40,8 +40,8 @@ export function getOrderRating(order) {
 
 //DOCS: https://pdfmake.github.io/docs/
 export function generatePdfTable({tasks, employee}) {
-  const headers = ['id', 'shipTo', 'item', 'quantity', 'sku', 'asin', 'shippingPrice', 'totalPrice', 'platform'];
-  const tableHeaders = ['ID', 'Ship to', 'Desc.', 'Qt', 'SKU', 'ASIN', 'Shipping Price', 'Total', 'Platform'];
+  const headers = ['shipTo', 'item', 'quantity', 'sku', 'shippingPrice', 'platform'];
+  const tableHeaders = ['Ship to', 'Desc.', 'Qt', 'SKU', 'Shipping Price', 'Platform'];
   const date = new Date().toLocaleDateString();
   const text = `Assignments for ${employee} | Date: ${date}`
   const body = tasks.map((order) => {
@@ -50,7 +50,7 @@ export function generatePdfTable({tasks, employee}) {
   });
 
   return {
-    pageOrientation: 'landscape',
+    pageOrientation: 'portrait',
     content: [
       {text, style: 'header'},
       {
