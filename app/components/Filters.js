@@ -8,6 +8,7 @@ const Filters = () => (
     <FilterLink filter={VisibilityFilters.SHOW_ALL}>All</FilterLink>
     <FilterLink filter={VisibilityFilters.SHOW_ACTIVE}>Active</FilterLink>
     <FilterLink filter={VisibilityFilters.SHOW_COMPLETED}>Completed</FilterLink>
+    <FilterLink filter={VisibilityFilters.ORDER_BY_RATING}>🔥</FilterLink>
   </div>
 )
 

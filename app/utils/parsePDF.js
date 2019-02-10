@@ -1,14 +1,16 @@
 import {get} from 'lodash';
 import {PLATFORMS} from '../constants/domain'
 import {parseAmazonOrder} from './parse-amazon-invoice';
-import {getProductType, formatOrderId} from './helpers';
+import {getProductType, formatOrderId, getOrderRating} from './helpers';
 
 function parseOrder(order) {
   const platform =  determinePlatform(order);
   const parsedOrders = getOrderDetails({platform, order});
-
+  const rating = getOrderRating(order);
+  
   return parsedOrders.map((order) => {
     return {
+      rating,
       ...order,
       assignee: '-',
       timeRegistered: Date.now(),
@@ -45,6 +47,7 @@ function parseEtsyOrder(order) {
   const totalPrice = /(?<=Order total).*/i.exec(order);
   const platform =  PLATFORMS.ETSY;
   const shipTo =  order.match(/(?<=Ship to)[^\0]*?(?=Scheduled to)/gmi) || '-';
+  const rating = 40; // HARDCODED RATING!!!!! ===================================>>>>>>>>>>> HACK
 
   return items.map((item, index) => {
     const sku = /(?<=SKU: ).*/i.exec(item);
@@ -63,6 +66,7 @@ function parseEtsyOrder(order) {
       platform,
       productType,
       item,
+      rating,
     };
   });
 }

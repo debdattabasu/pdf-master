@@ -10,7 +10,8 @@ export const CHANGE_ASSIGNEE = 'CHANGE_ASSIGNEE';
 export const VisibilityFilters = {
   SHOW_ALL: 'SHOW_ALL',
   SHOW_COMPLETED: 'SHOW_COMPLETED',
-  SHOW_ACTIVE: 'SHOW_ACTIVE'
+  SHOW_ACTIVE: 'SHOW_ACTIVE',
+  ORDER_BY_RATING: 'ORDER_BY_RATING',
 }
 
 export function addPdfToList(order) {
@@ -32,8 +33,9 @@ export function addPdfToList(order) {
 export const fetchOrders = () => async dispatch => {
   ordersRef.once('value', (snapshot) => {
     if (snapshot.val()) {
-      const orders = Object.keys(snapshot.val()).map(i => snapshot.val()[i])
-      dispatch({type: FETCH_ORDERS, orders});
+      const orders = Object.keys(snapshot.val()).map(i => snapshot.val()[i]);
+      const sortedOrders = _.sortBy(orders, ['rating', 'timeRegistered']);
+      dispatch({type: FETCH_ORDERS, orders: sortedOrders});
     }
   });
 }; 

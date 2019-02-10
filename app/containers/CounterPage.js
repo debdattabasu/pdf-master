@@ -4,6 +4,7 @@ import Counter from '../components/Counter';
 import * as OrderActions from '../actions/orders';
 import { signOut } from "../actions/auth";
 import * as EmployeeActions from '../actions/employees';
+import _ from 'lodash';
 
 const getVisibleOrders = (orders, filter) => {
   switch (filter) {
@@ -13,6 +14,10 @@ const getVisibleOrders = (orders, filter) => {
       return orders.filter(el => el.completed)
     case OrderActions.VisibilityFilters.SHOW_ACTIVE:
       return orders.filter(el => !el.completed)
+    case OrderActions.VisibilityFilters.ORDER_BY_RATING: {
+      const activeOrders = orders.filter(el => !el.completed);
+      return _.sortBy(activeOrders, ['rating', 'timeRegistered']);
+    }
     default:
       throw new Error(`Unknown filter:  ${filter}`)
   }

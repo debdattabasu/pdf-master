@@ -45,13 +45,16 @@ function OrdersTable(props) {
         {_.map(orders, (order => {
           return (
             <Table.Row key={order.id} positive={order.completed}>
-              <Table.Cell>{order.id}</Table.Cell>
-                <Popup
-                  wide
-                  key={order.id}
-                  trigger={<Table.Cell>{order.productType} <Icon name='info'/></Table.Cell>}
-                  content={order.item}
-                />
+              <Popup
+                wide
+                trigger={<Table.Cell>{order.id}</Table.Cell>}
+                content={`Rating: ${order.rating}`}
+              />
+              <Popup
+                wide
+                trigger={<Table.Cell>{order.productType} <Icon name='info'/></Table.Cell>}
+                content={order.item}
+              />
               <Table.Cell>{order.quantity}</Table.Cell>
               <Table.Cell>{order.shipTo}</Table.Cell>
               <Table.Cell>{order.shippingPrice}</Table.Cell>

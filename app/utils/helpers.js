@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {PRODUCTS} from '../constants/domain'
+import {PRODUCTS, SHOP_PRIORITIES, REGION_PRIORITIES} from '../constants/domain'
 
 export const mapEmployeesToOptions = (employees) => {
   return _.map(employees, (el = {}) => {
@@ -28,6 +28,14 @@ export function formatOrderId(id = [], index) {
 
 export function getProductType(item) {
   return _.find(PRODUCTS, (type) => item.includes(type)) || '-';
+}
+
+export function getOrderRating(order) {
+  const lowerOrder = order.toLowerCase();
+  const shopRating = _.find(SHOP_PRIORITIES, (shop) => new RegExp(shop.name).test(lowerOrder)) || {};
+  const regionRating = _.find(REGION_PRIORITIES, (region) => new RegExp(region.name).test(lowerOrder)) || {};
+
+  return (shopRating.priority || 20) + (regionRating.priority || 20);
 }
 
 //DOCS: https://pdfmake.github.io/docs/
