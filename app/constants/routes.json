@@ -2,5 +2,6 @@
   "HOME": "/",
   "COUNTER": "/counter",
   "EMPLOYEES": "/employees",
-  "GENERATE_TASK": "/generate_task"
+  "GENERATE_TASK": "/generate_task",
+  "EDIT_ORDER": "/editOrder"
 }

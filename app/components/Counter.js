@@ -62,7 +62,12 @@ export default class Counter extends Component<Props> {
           </Menu.Menu>
         </Menu>
         <Filters/>
-        <OrdersTable employees={employees} orders={orders} onOrderToggle={this.onOrderToggle} onAssigneeChange={onAssigneeChange}/>
+        <OrdersTable 
+          employees={employees}
+          orders={orders}
+          onOrderToggle={this.onOrderToggle}
+          onAssigneeChange={onAssigneeChange}
+        />
       </Container>
     );
   }

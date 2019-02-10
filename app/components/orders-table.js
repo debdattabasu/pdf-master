@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Table, Checkbox, Dropdown, Popup, Icon} from 'semantic-ui-react'
+import { Link } from 'react-router-dom';
+import {Table, Checkbox, Dropdown, Popup, Icon, Button} from 'semantic-ui-react'
 import _ from 'lodash';
 import {mapEmployeesToOptions} from '../utils/helpers';
+import routes from '../constants/routes';
 
 function OrdersTable(props) {
   const { orders, onOrderToggle, employees, onAssigneeChange } = props;
@@ -39,6 +41,7 @@ function OrdersTable(props) {
           <Table.HeaderCell>Completed</Table.HeaderCell>
           <Table.HeaderCell>Assignee</Table.HeaderCell>
           <Table.HeaderCell>First Assigned</Table.HeaderCell>
+          <Table.HeaderCell>Edit</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -66,6 +69,7 @@ function OrdersTable(props) {
               <Table.Cell>{ctaButton(order)}</Table.Cell>
               <Table.Cell>{assigneeList(order)}</Table.Cell>
               <Table.Cell>{order.assignedOn ? new Date(order.assignedOn).toLocaleDateString() : '-'}</Table.Cell>
+              <Table.Cell><Link to={`${routes.EDIT_ORDER}/${order.id}`}><Button size='mini' icon="pencil alternate"/></Link></Table.Cell>
             </Table.Row>
           );
         }))}

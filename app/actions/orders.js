@@ -59,6 +59,15 @@ export function onAssigneeChange({value, orderId, defaultValue, assignedOn}) {
   }
 }
 
+export function updateOrder(order) {
+  return (dispatch) => {
+    if(order) {
+      database.ref(`orders/${order.id}`).update(order);
+      dispatch({type: CHANGE_ASSIGNEE, orderId: order.id, ...order});
+    }
+  }
+}
+
 export function getTasks({orderLimit, productTypes}) {
   return (dispatch, getState) => {
     const {orders} = getState();

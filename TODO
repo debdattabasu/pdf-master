@@ -5,7 +5,7 @@ Todo:
   ✔ Fix ebay ship to @done(19-02-10 13:14)
   ✔ Sort by urgency platform and country @done(19-02-10 13:08)
   ✔ Remove some columns from export table @done(19-02-10 16:16)
-  ☐ Add '-' in exporting as a label
-  ☐ Edit shipping address
+  ✔ Add '-' in exporting as a label @done(19-02-10 16:45)
+  ✔ Edit shipping address @done(19-02-10 18:10)
   ☐ Real time updates
   ☐ Show an error if a pdf was not added to the list
