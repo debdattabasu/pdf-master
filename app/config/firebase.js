@@ -9,7 +9,16 @@ const config = {
   messagingSenderId: '734550661265'
 };
 
-firebase.initializeApp(config);
+const prod = {
+  apiKey: 'AIzaSyBb4oI1FQ650GcnitFwsiCjkfwlcVe61is',
+  authDomain: 'pressco-prod.firebaseapp.com',
+  databaseURL: 'https://pressco-prod.firebaseio.com',
+  projectId: 'pressco-prod',
+  storageBucket: 'pressco-prod.appspot.com',
+  messagingSenderId: '252058127955'
+};
+
+firebase.initializeApp(prod);
 
 const databaseRef = firebase.database().ref();
 export const database = firebase.database();
