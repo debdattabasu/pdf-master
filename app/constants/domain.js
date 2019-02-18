@@ -1,4 +1,4 @@
-export const PRODUCTS = ['T-shirt/Shirt', 'T-Shirt', 'T­shirt', 'Shirt', 'child', 'Hoodie', 'Crewneck', 'Bags', 'Case', 'Mug', 'Pillow',  'marškinėliai', 'capuche', 'Protection', 'film'];
+export const PRODUCTS = ['T-shirt/Shirt', 'T-Shirt', 'T­shirt', 'Shirt', 'child', 'Hoodie', 'Crewneck', 'Bags', 'Case', 'Mug', 'Pillow',  'marškinėliai', 'capuche', 'Protection', 'Film'];
 
 export const LANGUAGES = {
   ENGLISH: 'eng',
