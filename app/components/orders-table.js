@@ -6,6 +6,7 @@ import _ from 'lodash';
 import {mapEmployeesToOptions} from '../utils/helpers';
 import routes from '../constants/routes';
 
+// TODO PURE COMPONENT
 function OrdersTable(props) {
   const { orders, onOrderToggle, employees, onAssigneeChange } = props;
   const options = mapEmployeesToOptions(employees);

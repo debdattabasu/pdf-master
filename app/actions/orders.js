@@ -42,8 +42,15 @@ export const fetchOrders = () => async dispatch => {
 
 export function toggleOrder({id, completed}) {
   return (dispatch) => {
-    database.ref(`orders/${id}`).update({completed: !completed});
-    dispatch({type: TOGGLE_ORDER, orderId: id});
+    // was marked as not done anymore
+    if(completed) {
+      const update = {assignedOn: null, assignee: null, completed: false}
+      database.ref(`orders/${id}`).update(update);
+      dispatch({type: CHANGE_ASSIGNEE, orderId: id, ...update});
+    } else {
+      database.ref(`orders/${id}`).update({completed: !completed});
+      dispatch({type: TOGGLE_ORDER, orderId: id});
+    }
   }
 }
 

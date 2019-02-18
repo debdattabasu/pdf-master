@@ -92,12 +92,17 @@ ipcMain.on('scrapePDF', (event, path) => {
 
 //DOCS: https://pdfmake.github.io/docs/
 ipcMain.on('generateTaskPDF', (event, path, content) => {
+  const join = require('path') //path is overriten for some reason
+  const normal = join.join(__dirname, '/fonts/Roboto-Regular.ttf');
+  const bold = join.join(__dirname, '/fonts/Roboto-Medium.ttf');
+  const italic = join.join(__dirname, '/fonts/Roboto-Italic.ttf');
+  const boldItalics = join.join(__dirname, '/fonts/Roboto-Italic.ttf');
   const fonts = {
     Roboto: {
-      normal: 'resources/Roboto-Regular.ttf',
-      bold: 'resources/Roboto-Medium.ttf',
-      italics: 'resources/Roboto-Italic.ttf',
-      bolditalics: 'resources/Roboto-MediumItalic.ttf'
+      normal,
+      bold,
+      italic,
+      boldItalics,
     }
   };
   const options = {
