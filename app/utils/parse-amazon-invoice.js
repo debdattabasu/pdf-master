@@ -2,10 +2,17 @@ import {get} from 'lodash';
 import {PLATFORMS, LANGUAGES} from '../constants/domain'
 import {getProductType, formatOrderId} from './helpers';
 import franc from 'franc';
+import _ from 'lodash';
 
 export function parseAmazonOrder(order) {
-  const language = franc(order);
-  return parseOrder({order, language});
+  const orderWithEnd = `${order}END_OF_STRING`
+  // not really a page but one invoice. One pdf may contain invoices with different languages
+  const pages = orderWithEnd.match(/(?<=\d\d\d\d-\d\d-\d\d|Amazon)[^\0]*?(^\s*$|END_OF_STRING)/gmi) || [];
+  const tmp = pages.map((page) => {
+    const language = franc(page);
+    return parseOrder({order: page, language});
+  });
+  return _.flatten(tmp);
 }
 
 function parseOrder({language, order}){
