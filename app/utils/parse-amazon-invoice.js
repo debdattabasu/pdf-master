@@ -32,7 +32,7 @@ function parseEnglish(order) {
 }
 
 function parseGerman(order) {
-  const items = order.match(/(?<=Gesamtbestellsumme|Gesamtbetrag Artikel.*\n)[^\0]*?(?=Gesamtbetrag Artikel)/gmi) || [];
+  const items = order.match(/(?<=Gesamtbestellsumme|Gesamtbetrag Artikel.*\n(?!Gesamtbetrag))[^\0]*?(?=Gesamtbetrag Artikel)/gm) || [];
   const id = /(?<=Bestellnummer:.*).*/i.exec(order) || [];
   const shippingPrice = /(?<=Shipping total).*/i.exec(order);
   const totalPrice = /(?<=Gesamtbetrag:.*).*/i.exec(order);
@@ -44,7 +44,7 @@ function parseGerman(order) {
 
 function parseFrench(order) {
   // CASE SENSITIVE ITEMS!!!
-  const items = order.match(/(?<=Total.*des.*commandes|Total.*de.*l'article.*\n)[^\0]*?(?=Total.*de.*l'article)/gm) || []; 
+  const items = order.match(/(?<=Total.*des.*commandes|Total.*de.*l'article.*\n(?!Total:))[^\0]*?(?=Total.*de.*l'article)/gm) || []; 
   const id = /(?<=Numéro.*de.*la.*commande.*:).*/i.exec(order) || [];
   const shippingPrice = /(?<=Total de l'expédition).*/i.exec(order);
   const totalPrice = /(?<=Total:.*).*/i.exec(order);
@@ -55,7 +55,7 @@ function parseFrench(order) {
 }
 
 function parseItalian(order) {
-  const items = order.match(/(?<=Totale.*ordine|Tot..*articolo.*\n)[^\0]*?(?=Tot..*articolo)/gmi) || [];
+  const items = order.match(/(?<=Totale.*ordine|Tot..*articolo.*\n(?!Tot.:))[^\0]*?(?=Tot..*articolo)/gm) || [];
   const id = /(?<=Numero.*dell'ordine:).*/i.exec(order) || [];
   const shippingPrice = /(?<=Tot..*spedizione).*/i.exec(order);
   const totalPrice = /(?<=Tot.:.*).*/i.exec(order);
@@ -67,7 +67,7 @@ function parseItalian(order) {
 
 function parseSpanish(order) {
   // CASE SENSITIVE ITEMS!!!
-  const items = order.match(/(?<=Totales.*del.*pedido|Total.*del.*artículo.*\n)[^\0]*?(?=Total.*del.*artículo)/gm) || [];
+  const items = order.match(/(?<=Totales.*del.*pedido|Total.*del.*artículo.*\n(?!Suma total))[^\0]*?(?=Total.*del.*artículo)/gm) || [];
   const id = /(?<=Nº.*de.*pedido:).*/i.exec(order) || [];
   const shippingPrice = /(?<=Total.*del.*envío).*/i.exec(order);
   const totalPrice = /(?<=Suma.*total:.*).*/i.exec(order);
