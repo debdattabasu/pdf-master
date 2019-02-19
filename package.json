@@ -56,8 +56,8 @@
   },
   "main": "./app/main.prod.js",
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.develar.ElectronReact",
+    "productName": "Pressco",
+    "appId": "org.develar.Pressco",
     "files": [
       "app/dist/",
       "app/app.html",
