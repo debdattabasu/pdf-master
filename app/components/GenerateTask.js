@@ -40,13 +40,16 @@ export default class GenerateTask extends Component<Props> {
     try{
       const content = generatePdfTable({tasks, employee})
       remote.dialog.showSaveDialog(null, {}, (path) => {
-        ipcRenderer.sendSync('generateTaskPDF', path, content)
+        const status = ipcRenderer.sendSync('generateTaskPDF2', path, content)
+        setTimeout(() => {
+          if(status === 'DONE') {
+            updateMultipleOrderAssignees({orders: tasks, employee});
+            this.setState(initialState);
+          }
+        }, 1000);
       });
-    } catch {
+    } catch(err) {
       this.setState({error: true});
-    } finally {
-      updateMultipleOrderAssignees({orders: tasks, employee});
-      this.setState(initialState);
     }
   }
 
@@ -87,7 +90,7 @@ export default class GenerateTask extends Component<Props> {
         <Divider hidden/>
         {this.renderForm()}
         <Divider hidden/>
-        <OrdersTable employees={employees} orders={tasks} onOrderToggle={() => {}} onAssigneeChange={() =>{}}/>
+        <OrdersTable displayItem employees={employees} orders={tasks} onOrderToggle={() => {}} onAssigneeChange={() =>{}}/>
         <Modal open={error} onClose={this.closeModal} basic size='small'>
           <Header icon='fire' content='Error' />
           <Modal.Content>

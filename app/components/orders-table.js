@@ -12,6 +12,7 @@ export default class OrdersTable extends PureComponent {
     onOrderToggle: PropTypes.func.isRequired,
     onAssigneeChange: PropTypes.func.isRequired,
     employees: PropTypes.array.isRequired,
+    displayItem: PropTypes.bool,
   };
 
   ctaButton = (order) => <Checkbox checked={order.completed} toggle onChange={() => this.props.onOrderToggle(order)}/>
@@ -32,7 +33,7 @@ export default class OrdersTable extends PureComponent {
   }
 
   render() {
-    const { orders } = this.props;
+    const { orders, displayItem } = this.props;
     return (
       <Table size="small" compact="very">
         <Table.Header>
@@ -47,10 +48,10 @@ export default class OrdersTable extends PureComponent {
             <Table.HeaderCell>SKU</Table.HeaderCell>
             <Table.HeaderCell>ASIN</Table.HeaderCell>
             <Table.HeaderCell>Order Registered</Table.HeaderCell>
-            <Table.HeaderCell>Completed</Table.HeaderCell>
-            <Table.HeaderCell>Assignee</Table.HeaderCell>
-            <Table.HeaderCell>First Assigned</Table.HeaderCell>
-            <Table.HeaderCell>Edit</Table.HeaderCell>
+            {displayItem ? null : <Table.HeaderCell>Completed</Table.HeaderCell>}
+            {displayItem ? null : <Table.HeaderCell>Assignee</Table.HeaderCell>}
+            {displayItem ? null : <Table.HeaderCell>First Assigned</Table.HeaderCell>}
+            {displayItem ? null :  <Table.HeaderCell>Edit</Table.HeaderCell>}
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -64,7 +65,7 @@ export default class OrdersTable extends PureComponent {
                 />
                 <Popup
                   wide
-                  trigger={<Table.Cell>{order.productType} <Icon name='info'/></Table.Cell>}
+                  trigger={<Table.Cell>{displayItem ? `${order.productType} ${order.item}` : order.productType} <Icon name='info'/></Table.Cell>}
                   content={order.item}
                 />
                 <Table.Cell>{order.quantity}</Table.Cell>
@@ -75,10 +76,10 @@ export default class OrdersTable extends PureComponent {
                 <Table.Cell>{order.sku}</Table.Cell>
                 <Table.Cell>{order.asin}</Table.Cell>
                 <Table.Cell>{new Date(order.timeRegistered).toLocaleDateString()}</Table.Cell>
-                <Table.Cell>{this.ctaButton(order)}</Table.Cell>
-                <Table.Cell>{this.assigneeList(order)}</Table.Cell>
-                <Table.Cell>{order.assignedOn ? new Date(order.assignedOn).toLocaleDateString() : '-'}</Table.Cell>
-                <Table.Cell><Link to={`${routes.EDIT_ORDER}/${order.id}`}><Button size='mini' icon="pencil alternate"/></Link></Table.Cell>
+                {displayItem ? null : <Table.Cell>{this.ctaButton(order)}</Table.Cell>}
+                {displayItem ? null : <Table.Cell>{this.assigneeList(order)}</Table.Cell>}
+                {displayItem ? null : <Table.Cell>{order.assignedOn ? new Date(order.assignedOn).toLocaleDateString() : '-'}</Table.Cell>}
+                {displayItem ? null : <Table.Cell><Link to={`${routes.EDIT_ORDER}/${order.id}`}><Button size='mini' icon="pencil alternate"/></Link></Table.Cell>}
               </Table.Row>
             );
           }))}

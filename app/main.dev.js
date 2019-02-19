@@ -117,6 +117,31 @@ ipcMain.on('generateTaskPDF', (event, path, content) => {
   event.returnValue = 'DONE'
 });
 
+ipcMain.on('generateTaskPDF2', (event, path) => {
+  const option = {
+    landscape:  true,
+    marginsType: 0,
+    printBackground: false,
+    printSelectionOnly: false,
+    pageSize: "A4",
+  };
+  mainWindow.webContents.printToPDF(option, function(err, data) {
+    if (err) {
+      console.error(err)
+      return;
+    }
+    try{
+      if(path) {
+        fs.writeFileSync(`${path}.pdf`, data);
+        return event.returnValue = 'DONE'
+      }
+    }catch(err){
+      console.error(err)
+    }
+  });
+  return event.returnValue = 'DONE'
+});
+
 app.on('ready', async () => {
   if (
     process.env.NODE_ENV === 'development' ||
