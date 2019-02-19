@@ -21,7 +21,7 @@ function parseOrder({language, order}){
 }
 
 function parseEnglish(order) {
-  const items = order.match(/(?<=Totals|Item total.*\n)[^\0]*?(?=Item total)/gmi) || [];
+  const items = order.match(/(?<=Totals|Item total.*\n(?!Grand total))[^\0]*?(?=Item total)/gm) || [];
   const id = /(?<=Order ID: ).*/i.exec(order) || [];
   const shippingPrice = /(?<=Shipping total).*/i.exec(order);
   const totalPrice = /(?<=Grand total: ).*/i.exec(order);
