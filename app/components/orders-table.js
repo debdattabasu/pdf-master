@@ -26,7 +26,7 @@ export default class OrdersTable extends PureComponent {
       <Dropdown 
         inline
         options={options}
-        defaultValue={assignee || null}
+        value={assignee || null}
         onChange={(event, data) => onAssigneeChange({...data, orderId: id, assignedOn})}
       />
     )

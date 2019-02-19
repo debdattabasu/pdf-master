@@ -35,6 +35,10 @@ export default class Counter extends Component<Props> {
     toggleOrder(order);
   }
 
+  fetchOrders = () => {
+    this.props.fetchOrders();
+  }
+
   render() {
     const {auth, orders, employees, onAssigneeChange} = this.props;
 
@@ -49,6 +53,9 @@ export default class Counter extends Component<Props> {
           </Menu.Item>
           <Menu.Item>
             <Link to={routes.GENERATE_TASK}><Button primary size='small'>Generate Task</Button></Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Button primary size='small' onClick={this.fetchOrders}>Refresh Orders</Button>
           </Menu.Item>
           <Menu.Menu position='right'>
             <Menu.Item>
