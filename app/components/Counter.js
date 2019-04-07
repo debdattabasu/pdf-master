@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import { Link } from 'react-router-dom';
 import { remote, ipcRenderer } from 'electron';
-import { Image, Container, Menu, Button} from 'semantic-ui-react'
+import { Image, Container, Menu, Button, Grid} from 'semantic-ui-react'
 import OrdersTable from './orders-table';
 import Filters from './Filters';
 import routes from '../constants/routes';
@@ -12,7 +12,7 @@ export default class Counter extends Component<Props> {
     fetchOrders();
     fetchEmployees();
   }
- 
+
   importOrders = () => {
     const {addPdfToList} = this.props;
     const filters = [{name: 'Documents', extensions: ['pdf']}];
@@ -39,8 +39,12 @@ export default class Counter extends Component<Props> {
     this.props.fetchOrders();
   }
 
+  loadMoreOrders = () => {
+    this.props.fetchOrders(this.props.app.orderCursor);
+  }
+
   render() {
-    const {auth, orders, employees, onAssigneeChange} = this.props;
+    const {auth, orders, employees, onAssigneeChange, app} = this.props;
 
     return (
       <Container fluid style={{ padding: '2em'}}>
@@ -75,6 +79,11 @@ export default class Counter extends Component<Props> {
           onOrderToggle={this.onOrderToggle}
           onAssigneeChange={onAssigneeChange}
         />
+        <Grid>
+          <Grid.Column textAlign="center">
+            <Button content='Load More' loading={app.loadingMoreOrders} size="small" onClick={this.loadMoreOrders}/>
+          </Grid.Column>
+        </Grid>
       </Container>
     );
   }

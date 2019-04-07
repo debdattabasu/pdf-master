@@ -28,6 +28,7 @@ function mapStateToProps(state, ownProps) {
     orders: getVisibleOrders(state.orders, state.visibilityFilter),
     employees: state.employees,
     auth: state.auth,
+    app: state.app,
   };
 }
 

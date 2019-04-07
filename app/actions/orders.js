@@ -1,6 +1,7 @@
 import { database, fireStore } from "../config/firebase";
 import {parseOrder} from '../utils/parsePDF';
 import _ from 'lodash';
+import { UPDATE_ORDER_CURSOR, LOADING_MORE_ORDERS } from './app';
 
 export const ADD_ORDER = 'ADD_ORDER';
 export const FETCH_ORDERS = 'FETCH_ORDERS';
@@ -34,12 +35,23 @@ export function addPdfToList(order) {
   };
 }
 
-export const fetchOrders = () => async dispatch => {
-  fireStore.collection("orders").get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        dispatch({type: ADD_ORDER, ref: doc.id, ...doc.data()})
+export const fetchOrders = (orderCursor = null) => async dispatch => {
+  if (orderCursor) {
+    dispatch({type: LOADING_MORE_ORDERS});
+  }
+  fireStore
+    .collection('orders')
+    .orderBy('timeRegistered')
+    .startAfter(orderCursor)
+    .limit(100)
+    .get()
+    .then((querySnapshot) => {
+      const orderCursor = querySnapshot.docs[querySnapshot.docs.length-1];
+      dispatch({type: UPDATE_ORDER_CURSOR, orderCursor}); //Save page cursor.
+      querySnapshot.forEach(doc => {
+        dispatch({ type: ADD_ORDER, ref: doc.id, ...doc.data() });
+      });
     });
-  });
 }; 
 
 export function toggleOrder({id, completed, ref}) {

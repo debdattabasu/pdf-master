@@ -2,7 +2,7 @@ import {FETCH_EMPLOYEES, ADD_EMPLOYEE} from '../actions/employees';
 
 const employeeExists = (employees, nickName) => employees.some((e) => e.nickName === nickName);
 
-export default function orders(state = [], action: Action) {
+export default function orders(state = [], action) {
   switch (action.type) {
     case ADD_EMPLOYEE: {
       const {nickName} = action;
