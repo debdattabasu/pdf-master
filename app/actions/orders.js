@@ -43,7 +43,7 @@ export const fetchOrders = (orderCursor = null) => async dispatch => {
     .collection('orders')
     .orderBy('timeRegistered')
     .startAfter(orderCursor)
-    .limit(100)
+    .limit(1)
     .get()
     .then((querySnapshot) => {
       const orderCursor = querySnapshot.docs[querySnapshot.docs.length-1];
