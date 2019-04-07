@@ -1,5 +1,5 @@
 import uuid from 'uuid/v4';
-import { employeesRef } from '../config/firebase';
+import { fireStore, employeesRef } from '../config/firebase';
 import _ from 'lodash';
 
 export const FETCH_EMPLOYEES = 'FETCH_EMPLOYEES';
@@ -23,23 +23,25 @@ const getRandomImage = () => {
 }
 
 export const fetchEmployees = () => async dispatch => {
-  employeesRef.once('value', (snapshot) => {
-    if (snapshot.val()) {
-      const employees = Object.keys(snapshot.val()).map(i => snapshot.val()[i])
-      dispatch({type: FETCH_EMPLOYEES, employees});
-    }
-  });
+  fireStore.collection("employees").get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      dispatch({type: ADD_EMPLOYEE, ...doc.data()});
+    });
+});
 }; 
 
 export function addEmployee({firstName, lastName, nickName, id = uuid()}) {
   return (dispatch) => {
     if(nickName !== '') {
       const employee = {firstName, lastName, nickName, id, image: getRandomImage()}
-      employeesRef
-        .child(nickName)
-        .set(employee)
-        .then(dispatch({type: ADD_EMPLOYEE, ...employee}))
-        .catch((err) => console.log('error saving employee data!!!', err))
+      fireStore.collection("employees").add(employee)
+      .then(function() {
+          // console.log("Document written with ID: ", docRef.id);
+          dispatch({type: ADD_EMPLOYEE, ...employee});
+      })
+      .catch(function(error) {
+          console.error("Error adding employee: ", error);
+      });
     }
   };
 }

@@ -18,7 +18,9 @@ const prod = {
   messagingSenderId: '252058127955'
 };
 
-firebase.initializeApp(prod);
+firebase.initializeApp(config);
+
+var db = firebase.firestore();
 
 const databaseRef = firebase.database().ref();
 export const database = firebase.database();
@@ -26,3 +28,5 @@ export const ordersRef = databaseRef.child('orders');
 export const employeesRef = databaseRef.child('employees');
 export const authRef = firebase.auth();
 export const provider = new firebase.auth.GoogleAuthProvider();
+
+export const fireStore = db;

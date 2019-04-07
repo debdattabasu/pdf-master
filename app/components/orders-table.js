@@ -18,7 +18,7 @@ export default class OrdersTable extends PureComponent {
   ctaButton = (order) => <Checkbox checked={order.completed} toggle onChange={() => this.props.onOrderToggle(order)}/>
 
   assigneeList = (order) => {
-    const {assignedOn, id, assignee} = order;
+    const {assignedOn, id, assignee, ref} = order;
     const {employees, onAssigneeChange} = this.props;
     const options = mapEmployeesToOptions(employees);
 
@@ -27,7 +27,7 @@ export default class OrdersTable extends PureComponent {
         inline
         options={options}
         value={assignee || null}
-        onChange={(event, data) => onAssigneeChange({...data, orderId: id, assignedOn})}
+        onChange={(event, data) => onAssigneeChange({...data, orderId: id, assignedOn, ref})}
       />
     )
   }
