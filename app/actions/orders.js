@@ -1,4 +1,4 @@
-import { database, fireStore } from "../config/firebase";
+import {fireStore} from "../config/firebase";
 import {parseOrder} from '../utils/parsePDF';
 import _ from 'lodash';
 import { UPDATE_ORDER_CURSOR, LOADING_MORE_ORDERS } from './app';
@@ -8,6 +8,7 @@ export const FETCH_ORDERS = 'FETCH_ORDERS';
 export const TOGGLE_ORDER = 'TOGGLE_ORDER';
 export const CHANGE_ASSIGNEE = 'CHANGE_ASSIGNEE';
 export const UPDATE_ORDER = 'UPDATE_ORDER';
+export const CLEAR_ALL_ORDERS = 'CLEAR_ALL_ORDERS';
 
 export const VisibilityFilters = {
   SHOW_ALL: 'SHOW_ALL',
@@ -34,28 +35,31 @@ export function addPdfToList(order) {
     })
   };
 }
-
-export const fetchOrders = (orderCursor = null) => async dispatch => {
+export const fetchOrders = (orderCursor = null, filter= undefined, limit = 2) => async dispatch => {
   if (orderCursor) {
     dispatch({type: LOADING_MORE_ORDERS});
   }
-  fireStore
-    .collection('orders')
-    .orderBy('timeRegistered')
-    .startAfter(orderCursor)
-    .limit(1)
-    .get()
-    .then((querySnapshot) => {
-      const orderCursor = querySnapshot.docs[querySnapshot.docs.length-1];
-      dispatch({type: UPDATE_ORDER_CURSOR, orderCursor}); //Save page cursor.
-      querySnapshot.forEach(doc => {
-        dispatch({ type: ADD_ORDER, ref: doc.id, ...doc.data() });
-      });
+  const first = fireStore.collection('orders').orderBy('timeRegistered', 'desc').limit(limit);
+  const next = fireStore.collection('orders').orderBy('timeRegistered', 'desc').startAfter(orderCursor).limit(limit);
+  const aQuery = orderCursor ? next : first;
+  const query = filter !== undefined ? aQuery.where('completed', '==', filter) : aQuery;
+
+  query.get().then((querySnapshot) => {
+    const orderCursor = querySnapshot.docs[querySnapshot.docs.length-1];
+    dispatch({type: UPDATE_ORDER_CURSOR, orderCursor}); //Save page cursor.
+    querySnapshot.forEach(doc => {
+      dispatch({ type: ADD_ORDER, ref: doc.id, ...doc.data() });
     });
-}; 
+  });
+};
+
+export function clearAllOrders() {
+  return (dispatch) => {
+    dispatch({type: CLEAR_ALL_ORDERS});
+  }
+}
 
 export function toggleOrder({id, completed, ref}) {
-  console.log('ref: ', ref);
   return (dispatch) => {
     fireStore.collection("orders").doc(ref).update({completed: !completed})
     .then(() => {

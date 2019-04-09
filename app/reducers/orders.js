@@ -1,4 +1,4 @@
-import { ADD_ORDER, FETCH_ORDERS, TOGGLE_ORDER, CHANGE_ASSIGNEE, UPDATE_ORDER } from '../actions/orders';
+import { ADD_ORDER, FETCH_ORDERS, TOGGLE_ORDER, CHANGE_ASSIGNEE, UPDATE_ORDER, CLEAR_ALL_ORDERS } from '../actions/orders';
 import type { Action } from './types';
 
 const orderExists = (orders, orderId) => {
@@ -34,6 +34,9 @@ export default function orders(state = [], action: Action) {
         order =>
           order.id === action.order.id ? {...order, ...action.order} : order
       );
+    }
+    case CLEAR_ALL_ORDERS: {
+      return []
     }
     default:
       return state;

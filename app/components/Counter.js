@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import { remote, ipcRenderer } from 'electron';
 import { Image, Container, Menu, Button, Grid} from 'semantic-ui-react'
 import OrdersTable from './orders-table';
-import Filters from './Filters';
 import routes from '../constants/routes';
 
 export default class Counter extends Component<Props> {
+  state = {
+    filter: undefined,
+  }
   componentDidMount() {
     const {fetchOrders, fetchEmployees} = this.props
     fetchOrders();
@@ -40,7 +42,17 @@ export default class Counter extends Component<Props> {
   }
 
   loadMoreOrders = () => {
-    this.props.fetchOrders(this.props.app.orderCursor);
+    this.props.fetchOrders(this.props.app.orderCursor, this.state.filter);
+  }
+
+  loadAll = () => this.loadFilteredOrders(undefined);
+  loadFulfilled = () => this.loadFilteredOrders(true);
+  loadUnfulfilled = () => this.loadFilteredOrders(false);
+
+  loadFilteredOrders = (filter) => {
+    this.setState({filter});
+    this.props.clearAllOrders();
+    this.props.fetchOrders(null, filter);
   }
 
   render() {
@@ -58,9 +70,6 @@ export default class Counter extends Component<Props> {
           <Menu.Item>
             <Link to={routes.GENERATE_TASK}><Button primary size='small'>Generate Task</Button></Link>
           </Menu.Item>
-          <Menu.Item>
-            <Button primary size='small' onClick={this.fetchOrders}>Refresh Orders</Button>
-          </Menu.Item>
           <Menu.Menu position='right'>
             <Menu.Item>
               <Image src='https://react.semantic-ui.com/images/avatar/small/veronika.jpg' avatar />
@@ -72,7 +81,13 @@ export default class Counter extends Component<Props> {
             />
           </Menu.Menu>
         </Menu>
-        <Filters/>
+        <Button.Group size='mini'>
+          <Button onClick={this.loadAll} content="All Orders"/>
+          <Button.Or />
+          <Button onClick={this.loadFulfilled} content="Fulfilled Only" color="green"/>
+          <Button.Or />
+          <Button onClick={this.loadUnfulfilled} content="Unfulfilled Only" color="red"/>
+        </Button.Group>
         <OrdersTable 
           employees={employees}
           orders={orders}
