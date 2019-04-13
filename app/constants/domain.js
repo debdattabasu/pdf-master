@@ -39,3 +39,5 @@ export const REGION_PRIORITIES = [
   {name: 'lithuania', priority: 30},
   {name: 'lietuva', priority: 30},
 ];
+
+export const HOME_ADDRESS = 'Gauti adresa is Germanto.'

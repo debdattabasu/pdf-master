@@ -5,7 +5,7 @@ import { Container, Button, Header, Divider, Form, Modal } from 'semantic-ui-rea
 import routes from '../constants/routes';
 import {mapEmployeesToOptions, mapProductsToOptions} from '../utils/helpers';
 import {PRODUCTS} from '../constants/domain'
-import OrdersTable from './orders-table';
+import OrdersTable from './generate-table';
 import {generatePdfTable} from '../utils/helpers';
 
 const initialState = {
@@ -65,7 +65,7 @@ export default class GenerateTask extends Component<Props> {
       <Form>
         <Form.Group widths='equal'>
           <Form.Select name="employee" onChange={this.handleChange} fluid label='Employee' options={employeeOptions} placeholder='Pick One' required width={5}/>
-          <Form.Select name="selectedProducts" onChange={this.handleChange} fluid label='Product Types' options={productOptions} placeholder='Leaving blank will show all' multiple selection/>
+          <Form.Select name="selectedProducts" onChange={this.handleChange} fluid label='Product Types' options={productOptions} placeholder='Leaving blank will show all' multiple selection search/>
           <Form.Input name="count" onChange={this.handleChange} fluid label='Order count' placeholder='Number of orders' type="number" width={5}/>
         </Form.Group>
         <Form.Group>
@@ -80,7 +80,7 @@ export default class GenerateTask extends Component<Props> {
     const {employees} = this.props;
     const {tasks, error} = this.state;
     return (
-      <Container style={{ marginTop: '1em' }}>
+      <Container style={{ marginTop: '1em', width: '95%', }}>
         <div>
           <Link to={routes.COUNTER}>
             <Button size='mini' labelPosition='left' icon='left chevron' content='Home' />
