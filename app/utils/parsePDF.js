@@ -57,6 +57,7 @@ function parseEtsyOrder(order) {
   
     return {
       id: formatOrderId(id, index),
+      orderIndex: `${index+1} of ${items.length}`,
       shippingPrice: get(shippingPrice, '[0]') || '-',
       totalPrice: get(totalPrice, '[0]') || '-',
       sku: get(sku, '[0]') || '-',
@@ -114,6 +115,7 @@ function parseEcwidOrder(order) {
   
     return {
       id: formatOrderId(id, index),
+      orderIndex: `${index+1} of ${items.length}`,
       shippingPrice: get(shippingPrice, '[0]') || '-',
       totalPrice: get(totalPrice, '[0]') || '-',
       sku: get(sku, '[0]') || '-',
@@ -143,6 +145,7 @@ function parseShopifyOrder(order) {
     
     return {
       id: formatOrderId(id, index),
+      orderIndex: `${index+1} of ${items.length}`,
       shippingPrice: get(shippingPrice, '[0]') || '-',
       totalPrice: get(totalPrice, '[0]') || '-',
       sku: get(sku, '[0]') || '-',

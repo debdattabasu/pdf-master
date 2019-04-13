@@ -41,6 +41,7 @@ export default class OrdersTable extends PureComponent {
             <Table.HeaderCell>Order Id</Table.HeaderCell>
             <Table.HeaderCell>Product Type</Table.HeaderCell>
             <Table.HeaderCell>Quantity</Table.HeaderCell>
+            <Table.HeaderCell>Order Index</Table.HeaderCell>
             <Table.HeaderCell>Ship To</Table.HeaderCell>
             <Table.HeaderCell>Shipping Price</Table.HeaderCell>
             <Table.HeaderCell>Total Price</Table.HeaderCell>
@@ -69,7 +70,8 @@ export default class OrdersTable extends PureComponent {
                   content={order.item}
                 />
                 <Table.Cell>{order.quantity}</Table.Cell>
-                <Table.Cell>{order.shipTo}</Table.Cell>
+                <Table.Cell width="1">{order.orderIndex}</Table.Cell>
+                <Table.Cell width="3">{order.shipTo}</Table.Cell>
                 <Table.Cell>{order.shippingPrice}</Table.Cell>
                 <Table.Cell>{order.totalPrice}</Table.Cell>
                 <Table.Cell>{order.platform}</Table.Cell>

@@ -93,6 +93,7 @@ function formatOrder({items, id, shippingPrice, totalPrice, shipTo, platform}) {
   
     return {
       id: formatOrderId(id, index),
+      orderIndex: `${index+1} of ${items.length}`,
       shippingPrice: get(shippingPrice, '[0]') || '-',
       totalPrice: get(totalPrice, '[0]') || '-',
       sku: get(sku, '[0]') || '-',
