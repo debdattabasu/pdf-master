@@ -9,16 +9,18 @@ const config = {
   messagingSenderId: '734550661265'
 };
 
-// const prod = {
-//   apiKey: 'AIzaSyBb4oI1FQ650GcnitFwsiCjkfwlcVe61is',
-//   authDomain: 'pressco-prod.firebaseapp.com',
-//   databaseURL: 'https://pressco-prod.firebaseio.com',
-//   projectId: 'pressco-prod',
-//   storageBucket: 'pressco-prod.appspot.com',
-//   messagingSenderId: '252058127955'
-// };
+const prod = {
+  apiKey: 'AIzaSyBb4oI1FQ650GcnitFwsiCjkfwlcVe61is',
+  authDomain: 'pressco-prod.firebaseapp.com',
+  databaseURL: 'https://pressco-prod.firebaseio.com',
+  projectId: 'pressco-prod',
+  storageBucket: 'pressco-prod.appspot.com',
+  messagingSenderId: '252058127955'
+};
 
-firebase.initializeApp(config);
+const firebaseConfig = process.env.NODE_ENV === 'production' ? prod : config;
+
+firebase.initializeApp(firebaseConfig);
 
 var db = firebase.firestore();
 
