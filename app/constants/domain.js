@@ -40,4 +40,4 @@ export const REGION_PRIORITIES = [
   {name: 'lietuva', priority: 30},
 ];
 
-export const HOME_ADDRESS = 'Gauti adresa is Germanto.'
+export const HOME_ADDRESS = 'Uab Mano atributika T. Sevcenkos 16h - 12, vilnius Lithuania'
