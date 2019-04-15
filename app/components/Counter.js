@@ -96,7 +96,7 @@ export default class Counter extends Component<Props> {
         />
         <Grid>
           <Grid.Column textAlign="center">
-            <Button content='Load More' loading={app.loadingMoreOrders} size="small" onClick={this.loadMoreOrders}/>
+            <Button disabled={!app.orderCursor} content={!app.orderCursor ? 'Nothing More to Load' : 'Load More'} loading={app.loadingMoreOrders} size="small" onClick={this.loadMoreOrders}/>
           </Grid.Column>
         </Grid>
       </Container>

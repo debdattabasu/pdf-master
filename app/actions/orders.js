@@ -1,7 +1,7 @@
 import {fireStore} from "../config/firebase";
 import {parseOrder} from '../utils/parsePDF';
 import _ from 'lodash';
-import { UPDATE_ORDER_CURSOR, LOADING_MORE_ORDERS } from './app';
+import {UPDATE_ORDER_CURSOR, LOADING_MORE_ORDERS} from './app';
 
 export const ADD_ORDER = 'ADD_ORDER';
 export const FETCH_ORDERS = 'FETCH_ORDERS';
@@ -22,9 +22,8 @@ export function addPdfToList(order) {
     const newOrders = parseOrder(order);
 
     newOrders.forEach((newOrder) => {
-      console.log('newOrder: ', newOrder);
       if(newOrder.id) {
-        fireStore.collection("orders").doc(newOrder.id).set(newOrder)
+        fireStore.collection('orders').doc(newOrder.id).set(newOrder, {mergeFields: []}) //mergeFields are what fields to override. So none if it is the same order!!!!
         .then(() => {
             dispatch({type: ADD_ORDER, ...newOrder})
             // console.log("Document written with ID: ", docRef.id);
