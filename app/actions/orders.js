@@ -22,10 +22,11 @@ export function addPdfToList(order) {
     const newOrders = parseOrder(order);
 
     newOrders.forEach((newOrder) => {
+      console.log('newOrder: ', newOrder);
       if(newOrder.id) {
-        fireStore.collection("orders").add(newOrder)
-        .then(function(ref) {
-            dispatch({type: ADD_ORDER, ref: ref.id, ...newOrder})
+        fireStore.collection("orders").doc(newOrder.id).set(newOrder)
+        .then(() => {
+            dispatch({type: ADD_ORDER, ...newOrder})
             // console.log("Document written with ID: ", docRef.id);
         })
         .catch(function(error) {
@@ -86,7 +87,7 @@ export function onAssigneeChange({ref, value, orderId, defaultValue, assignedOn}
 export function updateOrder(order) {
   return (dispatch) => {
     if(order) {
-      fireStore.collection("orders").doc(order.ref).update(order)
+      fireStore.collection("orders").doc(order.id).update(order)
       .then(() => {
         dispatch({type: UPDATE_ORDER, order});
       });
