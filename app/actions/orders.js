@@ -23,7 +23,7 @@ export function addPdfToList(order) {
 
     newOrders.forEach((newOrder) => {
       if(newOrder.id) {
-        fireStore.collection('orders').doc(newOrder.id).set(newOrder, {mergeFields: []}) //mergeFields are what fields to override. So none if it is the same order!!!!
+        fireStore.collection('orders').doc(newOrder.id).set({...newOrder, initialWrite: true})
         .then(() => {
             dispatch({type: ADD_ORDER, ...newOrder})
             // console.log("Document written with ID: ", docRef.id);
@@ -61,7 +61,7 @@ export function clearAllOrders() {
 
 export function toggleOrder({id, completed, ref}) {
   return (dispatch) => {
-    fireStore.collection("orders").doc(ref).update({completed: !completed})
+    fireStore.collection("orders").doc(ref).update({completed: !completed, initialWrite: false})
     .then(() => {
         // dispatch({type: CHANGE_ASSIGNEE, orderId: id, completed: !completed});
         dispatch({type: TOGGLE_ORDER, orderId: id});
@@ -73,7 +73,7 @@ export function onAssigneeChange({ref, value, orderId, defaultValue, assignedOn}
   return (dispatch) => {
     if(defaultValue !== value) {
       const dateAssigned = assignedOn ? assignedOn : Date.now();
-      const update = {assignedOn: dateAssigned, assignee: value, completed: true}
+      const update = {assignedOn: dateAssigned, assignee: value, completed: true, initialWrite: false}
       fireStore.collection("orders").doc(ref).update(update)
       .then(() => {
           // console.log("ORDER successfully updated!");
@@ -86,7 +86,7 @@ export function onAssigneeChange({ref, value, orderId, defaultValue, assignedOn}
 export function updateOrder(order) {
   return (dispatch) => {
     if(order) {
-      fireStore.collection("orders").doc(order.id).update(order)
+      fireStore.collection("orders").doc(order.id).update({...order, initialWrite: false})
       .then(() => {
         dispatch({type: UPDATE_ORDER, order});
       });
@@ -122,7 +122,7 @@ export function updateMultipleOrderAssignees({orders, employee}) {
     orders.forEach((order) => {
       const {assignedOn, id, ref} = order;
       const dateAssigned = assignedOn ? assignedOn : Date.now();
-      const update = {assignedOn: dateAssigned, assignee: employee, completed: true}
+      const update = {assignedOn: dateAssigned, assignee: employee, completed: true, initialWrite: false}
       fireStore.collection("orders").doc(ref).update(update)
       .then(() => {
           dispatch({type: CHANGE_ASSIGNEE, orderId: id, ...update})

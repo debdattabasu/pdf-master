@@ -11,7 +11,7 @@ export default function orders(state = [], action: Action) {
       if (orderExists(state, action.id)) {
         return state;
       }
-      return [...state, action];
+      return [action, ...state];
     }
     case FETCH_ORDERS: {
       return action.orders
