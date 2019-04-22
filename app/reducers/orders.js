@@ -1,4 +1,4 @@
-import { ADD_ORDER, FETCH_ORDERS, TOGGLE_ORDER, CHANGE_ASSIGNEE, UPDATE_ORDER, CLEAR_ALL_ORDERS } from '../actions/orders';
+import { ADD_ORDER, ADD_ORDERS, TOGGLE_ORDER, CHANGE_ASSIGNEE, UPDATE_ORDER, CLEAR_ALL_ORDERS } from '../actions/orders';
 import type { Action } from './types';
 
 const orderExists = (orders, orderId) => {
@@ -13,8 +13,8 @@ export default function orders(state = [], action: Action) {
       }
       return [action, ...state];
     }
-    case FETCH_ORDERS: {
-      return action.orders
+    case ADD_ORDERS: {
+      return [...state, ...action.orders];
     }
     case TOGGLE_ORDER: {
       return state.map(

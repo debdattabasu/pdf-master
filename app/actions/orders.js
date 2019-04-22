@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {UPDATE_ORDER_CURSOR, LOADING_MORE_ORDERS} from './app';
 
 export const ADD_ORDER = 'ADD_ORDER';
-export const FETCH_ORDERS = 'FETCH_ORDERS';
+export const ADD_ORDERS = 'ADD_ORDERS';
 export const TOGGLE_ORDER = 'TOGGLE_ORDER';
 export const CHANGE_ASSIGNEE = 'CHANGE_ASSIGNEE';
 export const UPDATE_ORDER = 'UPDATE_ORDER';
@@ -45,11 +45,10 @@ export const fetchOrders = (orderCursor = null, filter= undefined, limit = 100) 
   const query = filter !== undefined ? aQuery.where('completed', '==', filter) : aQuery;
 
   query.get().then((querySnapshot) => {
+    const orders = querySnapshot.docs.map((el) => el.data())
     const orderCursor = querySnapshot.docs[querySnapshot.docs.length-1];
     dispatch({type: UPDATE_ORDER_CURSOR, orderCursor}); //Save page cursor.
-    querySnapshot.forEach(doc => {
-      dispatch({ type: ADD_ORDER, ref: doc.id, ...doc.data() });
-    });
+    dispatch({ type: ADD_ORDERS, orders});
   });
 };
 
