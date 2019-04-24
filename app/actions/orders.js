@@ -58,9 +58,9 @@ export function clearAllOrders() {
   }
 }
 
-export function toggleOrder({id, completed, ref}) {
+export function toggleOrder({id, completed}) {
   return (dispatch) => {
-    fireStore.collection("orders").doc(ref).update({completed: !completed, initialWrite: false})
+    fireStore.collection("orders").doc(id).update({completed: !completed, initialWrite: false})
     .then(() => {
         // dispatch({type: CHANGE_ASSIGNEE, orderId: id, completed: !completed});
         dispatch({type: TOGGLE_ORDER, orderId: id});
@@ -68,12 +68,12 @@ export function toggleOrder({id, completed, ref}) {
   }
 }
 
-export function onAssigneeChange({ref, value, orderId, defaultValue, assignedOn}) {
+export function onAssigneeChange({id, value, orderId, defaultValue, assignedOn}) {
   return (dispatch) => {
     if(defaultValue !== value) {
       const dateAssigned = assignedOn ? assignedOn : Date.now();
       const update = {assignedOn: dateAssigned, assignee: value, completed: true, initialWrite: false}
-      fireStore.collection("orders").doc(ref).update(update)
+      fireStore.collection("orders").doc(orderId).update(update)
       .then(() => {
           // console.log("ORDER successfully updated!");
           dispatch({type: CHANGE_ASSIGNEE, orderId, ...update});
@@ -119,10 +119,10 @@ export function getTasks({orderLimit, productTypes}) {
 export function updateMultipleOrderAssignees({orders, employee}) {
   return (dispatch, getState) => {
     orders.forEach((order) => {
-      const {assignedOn, id, ref} = order;
+      const {assignedOn, id} = order;
       const dateAssigned = assignedOn ? assignedOn : Date.now();
       const update = {assignedOn: dateAssigned, assignee: employee, completed: true, initialWrite: false}
-      fireStore.collection("orders").doc(ref).update(update)
+      fireStore.collection("orders").doc(id).update(update)
       .then(() => {
           dispatch({type: CHANGE_ASSIGNEE, orderId: id, ...update})
       });
