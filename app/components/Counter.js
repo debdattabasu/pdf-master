@@ -10,8 +10,8 @@ export default class Counter extends Component<Props> {
     filter: undefined,
   }
   componentDidMount() {
-    const {fetchOrders, fetchEmployees} = this.props
-    fetchOrders();
+    const {initialOrdersFetch, fetchEmployees} = this.props
+    initialOrdersFetch();
     fetchEmployees();
   }
 

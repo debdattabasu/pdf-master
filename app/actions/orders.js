@@ -35,7 +35,19 @@ export function addPdfToList(order) {
     })
   };
 }
-export const fetchOrders = (orderCursor = null, filter= undefined, limit = 100) => async dispatch => {
+
+export function initialOrdersFetch() {
+  return (dispatch, getState) => {
+    const {orders} = getState();
+    if(orders.length === 0) {
+      console.log('orders: ', orders.length);
+      dispatch(fetchOrders());
+    }
+  };
+}
+
+
+export const fetchOrders = (orderCursor = null, filter= undefined, limit = 10) => async dispatch => {
   if (orderCursor) {
     dispatch({type: LOADING_MORE_ORDERS});
   }
