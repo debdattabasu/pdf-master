@@ -19,4 +19,8 @@ install node-gyp globally
 
 > npm install -g node-gyp
 
+> git clone https://github.com/edvijaka/pdf-master.git
+
+> cd pdf-master
+
 > run yarn package
