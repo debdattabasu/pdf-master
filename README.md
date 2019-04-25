@@ -7,6 +7,8 @@ install gitBash
 
 install python
 
+install nodejs
+
 in gitBash:
 
 > export PATH="$PATH:/c/Python27"
