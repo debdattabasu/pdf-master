@@ -52,7 +52,7 @@ export function initialOrdersFetch() {
 }
 
 
-export const fetchOrders = (orderCursor = null, filter= undefined, limit = 10) => async dispatch => {
+export const fetchOrders = (orderCursor = null, filter= undefined, limit = 100) => async dispatch => {
   if (orderCursor) {
     dispatch({type: LOADING_MORE_ORDERS});
   }
