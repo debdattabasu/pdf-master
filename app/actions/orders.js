@@ -18,22 +18,27 @@ export const VisibilityFilters = {
 }
 
 export function addPdfToList(order) {
-  return (dispatch) => {
+  return async (dispatch) => {
     const newOrders = parseOrder(order);
 
-    newOrders.forEach((newOrder) => {
+    let newOrderCount = 0;
+    let failedToSave = [];
+
+    for (const newOrder of newOrders) {
       if(newOrder.id) {
-        fireStore.collection('orders').doc(newOrder.id).set({...newOrder, initialWrite: true})
-        .then(() => {
-            dispatch({type: ADD_ORDER, ...newOrder})
-            // console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function(error) {
-            console.error("Error adding document: ", error);
-        });
+        try {
+          await fireStore.collection('orders').doc(newOrder.id).set({...newOrder, initialWrite: true});
+          dispatch({type: ADD_ORDER, ...newOrder});
+          newOrderCount++;
+        }
+        catch(error) {
+          console.error("Error adding document: ", error);
+          failedToSave.push(newOrder);
+        }
       }
-    })
-  };
+    }
+    return {newOrderCount, failedToSave};
+  }
 }
 
 export function initialOrdersFetch() {

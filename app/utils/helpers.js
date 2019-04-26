@@ -76,3 +76,16 @@ export function generatePdfTable({tasks, employee}) {
     }
   }
 }
+
+export function formatImportSummary({filesSelectedCount, parsedFileSummaries}) {
+  const filesUploadedCount = _.uniqBy(parsedFileSummaries.filter((el) => el.newOrderCount > 0), 'path').length;
+  const totalOrdersSaved = _.sum(_.map(parsedFileSummaries, (el) => el.newOrderCount));
+  const totalOrdersFailed= _.sum(_.map(parsedFileSummaries, (el) => el.failedToSave.length));
+
+  return {
+    header: `Files - Selected: ${filesSelectedCount} \n Uploaded ${filesUploadedCount}`,
+    totalOrdersSaved: `Total orders added: ${totalOrdersSaved}`,
+    totalOrdersFailed: `Total orders failed: ${totalOrdersFailed}`,
+    content: parsedFileSummaries,
+  }
+}

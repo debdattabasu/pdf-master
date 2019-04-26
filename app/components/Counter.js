@@ -1,29 +1,44 @@
 import React, { Component} from 'react';
 import { Link } from 'react-router-dom';
 import { remote, ipcRenderer } from 'electron';
-import { Image, Container, Menu, Button, Grid} from 'semantic-ui-react'
+import { Image, Container, Menu, Button, Grid, Modal, Header} from 'semantic-ui-react'
 import OrdersTable from './orders-table';
 import routes from '../constants/routes';
+import {formatImportSummary} from '../utils/helpers';
+
+const initialState = {
+  importingFiles: false,
+  showModal: false,
+  importSummary: {
+    header: '',
+    content: [],
+  }
+}
 
 export default class Counter extends Component<Props> {
-  state = {
-    filter: undefined,
-  }
+  state = initialState;
+
   componentDidMount() {
     const {initialOrdersFetch, fetchEmployees} = this.props
     initialOrdersFetch();
     fetchEmployees();
   }
 
-  importOrders = () => {
+  importOrders = async () => {
     const {addPdfToList} = this.props;
     const filters = [{name: 'Documents', extensions: ['pdf']}];
     const paths = remote.dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'], filters}) || [];
-    if(paths.length > 0) {
-      paths.forEach((path) => {
+    let parsedFileSummaries = [];
+    const filesSelectedCount = paths.length;
+    if(filesSelectedCount > 0) {
+      this.setState({importingFiles: true});
+      for (const path of paths) {
         const pdfData = ipcRenderer.sendSync('scrapePDF', path);
-        addPdfToList(pdfData.text);
-      });
+        const addedOrderCount = await addPdfToList(pdfData.text);
+        parsedFileSummaries.push({path, ...addedOrderCount});
+      }
+      const importSummary = formatImportSummary({filesSelectedCount, parsedFileSummaries});
+      this.setState({showModal: true, importSummary, importingFiles: false});
     }
   }
 
@@ -55,14 +70,37 @@ export default class Counter extends Component<Props> {
     this.props.fetchOrders(null, filter);
   }
 
+  closeModal = () => this.setState(initialState);
+
+  modalContent = () => {
+    return (
+      <Modal.Content image>
+        <Modal.Description>
+          <Header>{this.state.importSummary.header}</Header>
+          <Header color="green">{this.state.importSummary.totalOrdersSaved}</Header>
+          <Header color="red">{this.state.importSummary.totalOrdersFailed}</Header>
+          {this.state.importSummary.content.map((summary, index) => {
+            return (
+              <p key={index}>
+                {summary.path}
+                <strong>{` Orders Parsed: ${summary.newOrderCount}`}</strong>
+              </p>
+            );
+          })}
+        </Modal.Description>
+      </Modal.Content>
+    );
+  }
+
   render() {
     const {auth, orders, employees, onAssigneeChange, app} = this.props;
+    const {importingFiles} = this.state;
 
     return (
       <Container fluid style={{ padding: '2em'}}>
         <Menu>
           <Menu.Item>
-            <Button primary size='small' onClick={this.importOrders}>Import Orders</Button>
+            <Button loading={importingFiles} disabled={importingFiles} primary size='small' onClick={this.importOrders}>Import Orders</Button>
           </Menu.Item>
           <Menu.Item>
             <Link to={routes.EMPLOYEES}><Button primary size='small'>Employees</Button></Link>
@@ -99,6 +137,14 @@ export default class Counter extends Component<Props> {
             <Button disabled={!app.orderCursor} content={!app.orderCursor ? 'Nothing More to Load' : 'Load More'} loading={app.loadingMoreOrders} size="small" onClick={this.loadMoreOrders}/>
           </Grid.Column>
         </Grid>
+        <Modal
+          open={this.state.showModal}
+          header="Import Summary"
+          content={this.modalContent}
+          actions={[{ key: 'done', content: 'Ok', positive: true }]}
+          onClose={this.closeModal}
+          onActionClick={this.closeModal}
+        />
       </Container>
     );
   }
