@@ -52,10 +52,6 @@ const installExtensions = async () => {
   ).catch(console.log);
 };
 
-/**
- * Add event listeners...
- */
-
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
@@ -74,21 +70,9 @@ ipcMain.on('scrapePDF', (event, path) => {
     });
 });
 
-// ipcMain.on('scrapePDF', (event, path) => {
-//   var extract = require('pdf-text-extract')
-//   var options = {
-//     layout: 'htmlmeta'
-//   }
-//   extract(path, options, function (err, pages) {
-//     if (err) {
-//       console.dir(err)
-//       return
-//     }
-//     event.returnValue = {text: pages[0].toString()}
-//     console.log('extracted pages', pages[0])
-//   })
-// });
-
+ipcMain.on('appVersion', (event) => {
+  event.returnValue = app.getVersion();
+});
 
 //DOCS: https://pdfmake.github.io/docs/
 ipcMain.on('generateTaskPDF', (event, path, content) => {
@@ -149,6 +133,8 @@ app.on('ready', async () => {
   ) {
     await installExtensions();
   }
+
+  autoUpdater.checkForUpdates();
 
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
   const icon = path.join(__dirname, 'app.icns');

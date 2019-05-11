@@ -72,6 +72,8 @@ export default class Counter extends Component<Props> {
 
   closeModal = () => this.setState(initialState);
 
+  getAppVersion = () => ipcRenderer.sendSync('appVersion') || null;
+
   modalContent = () => {
     return (
       <Modal.Content image>
@@ -100,7 +102,7 @@ export default class Counter extends Component<Props> {
       <Container fluid style={{ padding: '2em'}}>
         <Menu>
           <Menu.Item>
-            <Button loading={importingFiles} disabled={importingFiles} primary size='small' onClick={this.importOrders}>Import Orders</Button>
+            <Button loading={importingFiles} disabled={importingFiles} secondary size='small' onClick={this.importOrders}>Import Orders</Button>
           </Menu.Item>
           <Menu.Item>
             <Link to={routes.EMPLOYEES}><Button primary size='small'>Employees</Button></Link>
@@ -109,6 +111,9 @@ export default class Counter extends Component<Props> {
             <Link to={routes.GENERATE_TASK}><Button primary size='small'>Generate Task</Button></Link>
           </Menu.Item>
           <Menu.Menu position='right'>
+            <Menu.Item>
+              <span>{`Version: ${this.getAppVersion()}`}</span>            
+            </Menu.Item>
             <Menu.Item>
               <Image src='https://react.semantic-ui.com/images/avatar/small/veronika.jpg' avatar />
               <span>{auth.email}</span>            
