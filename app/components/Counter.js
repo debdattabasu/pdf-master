@@ -94,6 +94,8 @@ export default class Counter extends Component<Props> {
     );
   }
 
+  updateApp = () => ipcRenderer.sendSync('updateApp');
+
   render() {
     const {auth, orders, employees, onAssigneeChange, app} = this.props;
     const {importingFiles} = this.state;
@@ -113,6 +115,9 @@ export default class Counter extends Component<Props> {
           <Menu.Menu position='right'>
             <Menu.Item>
               <span>{`Version: ${this.getAppVersion()}`}</span>            
+            </Menu.Item>
+            <Menu.Item>
+              <Button primary onClick={this.updateApp} size='small'>Update</Button>
             </Menu.Item>
             <Menu.Item>
               <Image src='https://react.semantic-ui.com/images/avatar/small/veronika.jpg' avatar />

@@ -22,7 +22,7 @@ const path = require('path')
 
 export default class AppUpdater {
   constructor() {
-    log.transports.file.level = 'info';
+    autoUpdater.logger.transports.file.level = "info"
     autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
   }
@@ -72,6 +72,10 @@ ipcMain.on('scrapePDF', (event, path) => {
 
 ipcMain.on('appVersion', (event) => {
   event.returnValue = app.getVersion();
+});
+
+ipcMain.on('checkForUpdate', async (event) => {
+  await autoUpdater.downloadUpdate();
 });
 
 //DOCS: https://pdfmake.github.io/docs/
@@ -161,6 +165,30 @@ app.on('ready', async () => {
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
+
+  function sendStatusToWindow(text) {
+    log.info(text);
+    mainWindow.webContents.send('message', text);
+  }
+
+  autoUpdater.on('checking-for-update', () => {
+    sendStatusToWindow('Checking for update...');
+  })
+  autoUpdater.on('update-available', (ev, info) => {
+    sendStatusToWindow('Update available.');
+  })
+  autoUpdater.on('update-not-available', (ev, info) => {
+    sendStatusToWindow('Update not available.');
+  })
+  autoUpdater.on('error', (ev, err) => {
+    sendStatusToWindow('Error in auto-updater.');
+  })
+  autoUpdater.on('download-progress', (ev, progressObj) => {
+    sendStatusToWindow('Download progress...');
+  })
+  autoUpdater.on('update-downloaded', (ev, info) => {
+    sendStatusToWindow('Update downloaded; will install in 5 seconds');
+  });
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
